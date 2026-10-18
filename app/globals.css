@@ -1,26 +1,28 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* CheckAm brand tokens from Figma (light mode). Use as bg-primary, text-danger, border-border, etc. */
+@theme {
+  --color-primary: #075C45;
+  --color-primary-strong: #063D31;
+  --color-ink: #142D26;
+  --color-muted: #5B6D66;
+  --color-border: #DAE4DD;
+  --color-subtle: #F5F8F6;
+  --color-success: #176C46;
+  --color-success-tint: #EAF4ED;
+  --color-danger: #AE3337;
+  --color-danger-tint: #FCF0EF;
+  --color-neutral: #5B656C;
+  --color-neutral-tint: #F0F3F4;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter), system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* Dark mode is optional: only add it on Tuesday if everything else is done. */
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: var(--color-ink);
 }

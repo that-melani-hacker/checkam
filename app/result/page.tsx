@@ -11,6 +11,7 @@ import { primaryButton } from '@/components/result/buttonStyles';
 import { VerdictBanner } from '@/components/result/VerdictBanner';
 import { ComparisonTable } from '@/components/result/ComparisonTable';
 import { PharmacistNote } from '@/components/result/PharmacistNote';
+import { MedicineInfo } from '@/components/result/MedicineInfo';
 import { ResultActions } from '@/components/result/ResultActions';
 
 /** Owner: Melani. Try /result?mock=mismatch, ?mock=no_red_flags, ?mock=not_found, ?mock=expired, ?mock=unreadable (add &lang=pcm) */
@@ -47,6 +48,10 @@ export default function ResultPage() {
             </button>
           )}
           <ComparisonTable checks={result.checks} verdict={result.verdict} />
+          {/* Only for a clean result: explaining a suspicious pack's medicine could nudge people to take it */}
+          {result.verdict === 'no_red_flags' && result.registry && (
+            <MedicineInfo name={result.registry.name} strength={result.registry.strength} />
+          )}
           <PharmacistNote verdict={result.verdict} />
           <ResultActions verdict={result.verdict} />
         </div>

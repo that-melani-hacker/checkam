@@ -24,6 +24,12 @@ type ImageType = "image/jpeg" | "image/png" | "image/webp";
 
 let client: Anthropic | null = null;
 
+/** One shared client. maxRetries 0: callers retry themselves, inside their own time limits. */
+export function getClaude(): Anthropic {
+  client ??= new Anthropic({ maxRetries: 0 });
+  return client;
+}
+
 /** Thrown when Anthropic rejects the key: retrying can't help, but Gemini can take over. */
 export class ClaudeKeyError extends VerifyError {
   constructor(detail: string) {
@@ -41,8 +47,7 @@ export async function readPackWithClaude(
   prompt: string,
   timeoutMs: number,
 ): Promise<string> {
-  // maxRetries 0: extract.ts retries itself, inside the phone's time limit.
-  client ??= new Anthropic({ maxRetries: 0 });
+  const client = getClaude();
 
   try {
     const response = await client.beta.messages.create(

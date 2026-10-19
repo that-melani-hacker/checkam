@@ -79,6 +79,14 @@ export interface Upload {
   tag: Nullable<string>;
 }
 
+/** "About this medicine" card on the Result screen (POST /api/explain). General information only. */
+export interface MedicineText {
+  summary: string; // one or two plain sentences: what the medicine is
+  uses: string[]; // what it's commonly used for
+  tips: string[]; // general care points (never doses)
+}
+export type MedicineInfo = { known: false } | { known: true; en: MedicineText; pcm: MedicineText };
+
 /** Most photos one check accepts (front, back, sides). */
 export const MAX_PHOTOS = 4;
 

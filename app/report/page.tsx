@@ -1,19 +1,24 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Copy, ExternalLink, FilePenLine, Package, Share2 } from 'lucide-react';
 import { useVerify } from '@/lib/state/VerifyContext';
 import { reportUi } from '@/lib/i18n/report';
-import { MED_SAFETY_URL, buildReportText, copyReport, shareReport } from '@/lib/report/report';
+import { MED_SAFETY_WEB, buildReportText, copyReport, getMedSafetyUrl, shareReport } from '@/lib/report/report';
 import { ReportSummary } from '@/components/report/ReportSummary';
 import { ScreenFrame } from '@/components/result/ScreenFrame';
 import { primaryButton as primary, secondaryButton as secondary } from '@/components/result/buttonStyles';
+
+// The phone type never changes while the page is open, so there's nothing to subscribe to.
+const noSubscribe = () => () => {};
 
 /** Owner: Melani. Try /report?mock=mismatch (add &lang=pcm). Test: D6 */
 export default function ReportPage() {
   const { result, photoUrl, lang } = useVerify();
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
+  // The server can't see the phone, so it renders the web link; the browser swaps in the right store.
+  const medSafetyUrl = useSyncExternalStore(noSubscribe, getMedSafetyUrl, () => MED_SAFETY_WEB);
 
   if (!result || !photoUrl) {
     return (
@@ -62,7 +67,7 @@ export default function ReportPage() {
         <ReportSummary result={result} photoUrl={photoUrl} />
 
         <div className="flex flex-col gap-2.5">
-          <a href={MED_SAFETY_URL} target="_blank" rel="noopener noreferrer" className={primary}>
+          <a href={medSafetyUrl} target="_blank" rel="noopener noreferrer" className={primary}>
             <ExternalLink size={21} aria-hidden />
             {reportUi.openMedSafety[lang]}
           </a>

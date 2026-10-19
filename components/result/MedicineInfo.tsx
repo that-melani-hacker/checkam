@@ -6,7 +6,11 @@ import type { MedicineInfo as Info, Nullable } from '@/lib/types';
 import { useVerify } from '@/lib/state/VerifyContext';
 import { resultUi } from '@/lib/i18n/result';
 
-type Props = { name: string; strength: Nullable<string> };
+type Props = {
+  name: string; // NAFDAC's registered product name
+  strength: Nullable<string>;
+  packName: Nullable<string>; // the name as read on the pack, which often includes the generic name
+};
 
 const TIMEOUT_MS = 20_000;
 
@@ -14,7 +18,7 @@ const TIMEOUT_MS = 20_000;
  * Owner: Melani. "About this medicine": general, plain-language information about the registered product.
  * Loads after the verdict so it never slows the check down; hides itself if anything goes wrong.
  */
-export function MedicineInfo({ name, strength }: Props) {
+export function MedicineInfo({ name, strength, packName }: Props) {
   const { lang } = useVerify();
   const [info, setInfo] = useState<Info | 'loading' | 'hidden'>('loading');
 
@@ -24,7 +28,7 @@ export function MedicineInfo({ name, strength }: Props) {
     fetch('/api/explain', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, strength }),
+      body: JSON.stringify({ name, strength, packName }),
       signal: controller.signal,
     })
       .then((res) => (res.ok ? (res.json() as Promise<Info>) : null))
@@ -35,7 +39,7 @@ export function MedicineInfo({ name, strength }: Props) {
       clearTimeout(timer);
       controller.abort();
     };
-  }, [name, strength]);
+  }, [name, strength, packName]);
 
   if (info === 'hidden' || (info !== 'loading' && !info.known)) return null;
 

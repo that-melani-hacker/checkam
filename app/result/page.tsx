@@ -50,7 +50,11 @@ export default function ResultPage() {
           <ComparisonTable checks={result.checks} verdict={result.verdict} />
           {/* Only for a clean result: explaining a suspicious pack's medicine could nudge people to take it */}
           {result.verdict === 'no_red_flags' && result.registry && (
-            <MedicineInfo name={result.registry.name} strength={result.registry.strength} />
+            <MedicineInfo
+              name={result.registry.name}
+              strength={result.registry.strength}
+              packName={result.extracted.name}
+            />
           )}
           <PharmacistNote verdict={result.verdict} />
           <ResultActions verdict={result.verdict} />

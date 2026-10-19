@@ -5,10 +5,14 @@ const MODEL = process.env.CLAUDE_MODEL || "claude-opus-5-5";
 const TIMEOUT_MS = 15_000;
 
 const PROMPT = `You write the "About this medicine" card in CheckAm, a Nigerian app that checks drug packs against NAFDAC's register.
-The pack's registered product is given below. Explain it for an everyday reader, in plain English and in Nigerian Pidgin.
+The pack's registered product is given below, with the name as printed on the pack when it was readable.
+Explain it for an everyday reader, in plain English and in Nigerian Pidgin.
 
 Rules:
-- Work out the active ingredient(s) from the product name. If you aren't confident which medicine this is, set known to false.
+- Work out the active ingredient(s) from the names. The name on the pack often includes the generic name under the brand
+  (for example "Krisdrex - Paracetamol + Caffeine"); a widely known brand name (for example "Panadol Extra") is enough on its own.
+  Use the strength only to confirm what the names tell you, never to guess the ingredients from the numbers.
+  If the names don't tell you which medicine this is, set known to false.
 - Give only general, well-established information about what the medicine is and what it is commonly used for.
 - Never give doses, amounts, how often to take it, or who should or shouldn't take it beyond "ask a pharmacist".
 - Never diagnose, and never suggest the reader's condition.
@@ -56,8 +60,12 @@ const CACHE_LIMIT = 300;
  * Returns { known: false } when Claude isn't sure what the medicine is or the answer breaks a rule.
  * Throws when Claude is unreachable; the caller hides the card.
  */
-export async function explainMedicine(name: string, strength: string | null): Promise<MedicineInfo> {
-  const key = `${name}|${strength ?? ""}`.toLowerCase();
+export async function explainMedicine(
+  name: string,
+  strength: string | null,
+  packName: string | null = null,
+): Promise<MedicineInfo> {
+  const key = `${name}|${strength ?? ""}|${packName ?? ""}`.toLowerCase();
   const hit = cache.get(key);
   if (hit) return hit;
 
@@ -72,7 +80,13 @@ export async function explainMedicine(name: string, strength: string | null): Pr
       messages: [
         {
           role: "user",
-          content: `Registered product: ${name}${strength ? `\nStrength: ${strength}` : ""}`,
+          content: [
+            `Registered product: ${name}`,
+            strength && `Strength: ${strength}`,
+            packName && packName.toLowerCase() !== name.toLowerCase() && `Name as printed on the pack: ${packName}`,
+          ]
+            .filter(Boolean)
+            .join("\n"),
         },
       ],
     },

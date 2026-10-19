@@ -50,7 +50,7 @@ export function ReportSummary({ result, photoUrl }: Props) {
       <div className="flex flex-col gap-4 p-4">
         <div className="flex items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element -- local blob URL from the user's camera */}
-          <img src={photoUrl} alt="" className="size-14 shrink-0 rounded-[10px] bg-[#edf2f0] object-cover" />
+          <img src={photoUrl} alt="" className="size-14 shrink-0 rounded-[10px] bg-success-tint object-cover" />
           <p className="text-xs text-muted">{reportUi.photo[lang]}</p>
         </div>
 

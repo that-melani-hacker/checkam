@@ -1,7 +1,19 @@
 import type { Check, VerifyResponse } from '@/lib/types';
 
-/** Where the report button sends people. Replace with NAFDAC's official Med Safety link once confirmed. */
-export const MED_SAFETY_URL = 'https://www.nafdac.gov.ng';
+/** NAFDAC's Med Safety app (the WHO/WEB-RADR app; users pick Nigeria when it first opens). */
+const MED_SAFETY_ANDROID = 'https://play.google.com/store/apps/details?id=com.epidemico.webradr';
+const MED_SAFETY_IOS = 'https://apps.apple.com/gb/app/web-radr-sav/id1439060917';
+/** NAFDAC's Med Safety web reporting page (linked from greenbook.nafdac.gov.ng), for laptops. */
+export const MED_SAFETY_WEB = 'https://nafdac.medsafety.io/';
+
+/** Picks the right store for the phone; falls back to NAFDAC's web reporting page on laptops. */
+export function getMedSafetyUrl(): string {
+  if (typeof navigator === 'undefined') return MED_SAFETY_WEB;
+  const ua = navigator.userAgent;
+  if (/android/i.test(ua)) return MED_SAFETY_ANDROID;
+  if (/iphone|ipad|ipod/i.test(ua)) return MED_SAFETY_IOS;
+  return MED_SAFETY_WEB;
+}
 
 const label: Record<Check['field'], string> = {
   name: 'Name',

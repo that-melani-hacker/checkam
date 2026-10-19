@@ -55,6 +55,39 @@ function companyMatch(a: Nullable<string>, b: Nullable<string>): boolean {
   return closeEnough(x, y);
 }
 
+// Doses in milligrams where the unit allows it, so "1 g" = "1000 mg" and "750 mcg" = "0.75 mg".
+const TO_MG: Record<string, number> = { g: 1000, mg: 1, mcg: 0.001, "µg": 0.001, ug: 0.001 };
+const DOSE = /(\d+(?:[.,]\d+)?)\s*(mcg|µg|ug|mg|g|ml|iu|%)(?![a-z])/g;
+
+/** Every dose in a strength, normalised: "Pregabalin 75 mg & Methylcobalamin 750 mcg" -> ["0.75mg", "75mg"]. */
+function doses(raw: string): string[] {
+  const s = raw.toLowerCase().replace(/(\d),(\d{3})(?!\d)/g, "$1$2"); // 1,000 mg -> 1000 mg
+  return [...s.matchAll(DOSE)]
+    .map(([, n, unit]) => {
+      const value = Number(n.replace(",", "."));
+      return unit in TO_MG ? `${+(value * TO_MG[unit]).toFixed(6)}mg` : `${value}${unit}`;
+    })
+    .sort();
+}
+
+/**
+ * Owner: Fortunatus. Compares doses, not wording: ingredient names, "&" vs ";" and spacing don't matter.
+ * Every dose shown on the pack must be in the record (a pack may show only some of a combination's doses),
+ * so "1000 mg" against a "500 mg" record still fails. Tests: A3, A14
+ */
+export function strengthMatch(pack: string, record: string): boolean {
+  const a = doses(pack);
+  const b = doses(record);
+  if (a.length === 0 || b.length === 0) return normalizeStrength(pack) === normalizeStrength(record);
+  const left = [...b];
+  return a.every((d) => {
+    const i = left.indexOf(d);
+    if (i === -1) return false;
+    left.splice(i, 1);
+    return true;
+  });
+}
+
 /** Owner: Fortunatus. Parses 'MM/YYYY' (also MM/YY, MM-YYYY, YYYY-MM). Null when unreadable. Tests: A7, A15 */
 export function isPackExpired(
   expiry: Nullable<string>,
@@ -105,7 +138,7 @@ export function buildChecks(
       ok: compare(
         extracted.strength,
         record?.strength ?? null,
-        (a, b) => normalizeStrength(a) === normalizeStrength(b),
+        strengthMatch,
       ),
     },
     {

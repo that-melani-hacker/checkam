@@ -6,7 +6,9 @@ import { ClaudeKeyError, readPackWithClaude } from "@/lib/ai/claude";
 export const EXTRACTION_PROMPT = `You read medicine packaging from one or more photos of the same pack, often different sides of it.
 Combine what is printed across all the photos. Copy only what is printed on the pack.
 Return JSON with exactly these keys: name, strength, manufacturer, nafdac_no, expiry, batch.
-- name: the brand and generic name as printed, for example "Emzor Paracetamol".
+- name: the product name printed as the pack's title, usually large on the front (brand plus generic name, for example "Emzor Paracetamol").
+  Never take the name from the ingredients: lines like "Each tablet contains…", "Composition", "Active ingredient" or "Contains" list ingredients, not the product name.
+  If the product name itself isn't visible in the photos, use null, even if the ingredients are.
 - strength: as printed, for example "500 mg" or "250 mg/5 ml".
 - manufacturer: the company that made the product (look for "Manufactured by"), not a distributor.
 - nafdac_no: the NAFDAC registration number as printed, for example "A4-1234" or "04-5678".

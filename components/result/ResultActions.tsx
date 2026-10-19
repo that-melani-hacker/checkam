@@ -21,8 +21,9 @@ export function ResultActions({ verdict }: Props) {
   const router = useRouter();
   const red = RED.includes(verdict);
 
+  // A new check starts from Home, like the first one did.
   function checkAnother() {
-    router.push('/scan');
+    router.push('/');
     reset();
   }
 

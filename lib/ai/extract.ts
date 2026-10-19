@@ -1,6 +1,7 @@
 import { z } from "zod";
 import type { Extracted } from "@/lib/types";
 import { VerifyError } from "@/lib/errors";
+import { ClaudeKeyError, readPackWithClaude } from "@/lib/ai/claude";
 
 export const EXTRACTION_PROMPT = `You read medicine packaging from a photo. Copy only what is printed on the pack.
 Return JSON with exactly these keys: name, strength, manufacturer, nafdac_no, expiry, batch.
@@ -67,18 +68,33 @@ export async function extractPackDetails(
   image: Buffer,
   mimeType: string,
 ): Promise<Extracted> {
-  const key = process.env.GEMINI_API_KEY;
-  if (!key)
-    throw new VerifyError("ai_unavailable", "GEMINI_API_KEY is not set");
+  // Claude reads the pack when its key is set; otherwise Gemini does.
+  const claudeKey = process.env.ANTHROPIC_API_KEY;
+  const geminiKey = process.env.GEMINI_API_KEY;
+  if (!claudeKey && !geminiKey)
+    throw new VerifyError("ai_unavailable", "Neither ANTHROPIC_API_KEY nor GEMINI_API_KEY is set");
+  let useClaude = Boolean(claudeKey);
+  const readOnce = (timeoutMs: number) =>
+    useClaude
+      ? readPackWithClaude(image, mimeType, EXTRACTION_PROMPT, timeoutMs).then(parseExtraction)
+      : requestOnce(image, mimeType, geminiKey!, timeoutMs);
 
   const deadline = Date.now() + TOTAL_BUDGET_MS;
   for (;;) {
     try {
-      return await requestOnce(image, mimeType, key, deadline - Date.now());
+      return await readOnce(deadline - Date.now());
     } catch (err) {
+      // A rejected Claude key never recovers: hand over to Gemini if it's set up, else stop.
+      if (err instanceof ClaudeKeyError) {
+        if (!geminiKey) throw err;
+        console.warn(`[verify] ${err.message}; using Gemini instead`);
+        useClaude = false;
+        continue;
+      }
+      const provider = useClaude ? "Claude" : "Gemini";
       const retryable = err instanceof VerifyError && err.code === "ai_unavailable";
       if (!retryable || deadline - Date.now() < MIN_RETRY_MS + RETRY_PAUSE_MS) throw err;
-      console.warn(`[verify] retrying Gemini: ${err.message.slice(0, 120)}`);
+      console.warn(`[verify] retrying ${provider}: ${err.message.slice(0, 120)}`);
       await new Promise((r) => setTimeout(r, RETRY_PAUSE_MS));
     }
   }

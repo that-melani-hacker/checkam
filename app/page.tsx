@@ -5,6 +5,8 @@ import { useVerify } from '@/lib/state/VerifyContext';
 import { t } from '@/lib/i18n/strings';
 import type { Lang } from '@/lib/types';
 import { HowItWorksStrip } from '@/components/home/HowItWorksStrip';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { OfflineBanner } from '@/components/home/OfflineBanner';
 
 /** Owner: Albert. Home, built from the Figma mobile frames (English + Pidgin). */
 
@@ -80,28 +82,31 @@ function Header() {
         <span className="text-[22px] font-bold text-primary-strong">CheckAm</span>
       </Link>
 
-      {/* The selected language is the filled green pill */}
-      <div
-        role="group"
-        aria-label="Language"
-        className="flex h-11 items-center gap-px rounded-full border border-border bg-subtle p-0.75"
-      >
-        {LANG_OPTIONS.map(({ value, label }) => {
-          const selected = lang === value;
-          return (
-            <button
-              key={value}
-              type="button"
-              aria-pressed={selected}
-              onClick={() => setLang(value)}
-              className={`h-9 rounded-full px-2.5 text-xs transition-colors focus-visible:outline-2 focus-visible:outline-primary ${
-                selected ? 'bg-primary text-white' : 'text-muted hover:text-ink'
-              }`}
-            >
-              {label}
-            </button>
-          );
-        })}
+      <div className="flex items-center gap-2">
+        {/* The selected language is the filled green pill */}
+        <div
+          role="group"
+          aria-label="Language"
+          className="flex h-11 items-center gap-px rounded-full border border-border bg-subtle p-0.75"
+        >
+          {LANG_OPTIONS.map(({ value, label }) => {
+            const selected = lang === value;
+            return (
+              <button
+                key={value}
+                type="button"
+                aria-pressed={selected}
+                onClick={() => setLang(value)}
+                className={`h-9 rounded-full px-2.5 text-xs transition-colors focus-visible:outline-2 focus-visible:outline-primary ${
+                  selected ? 'bg-primary text-white' : 'text-muted hover:text-ink'
+                }`}
+              >
+                {label}
+              </button>
+            );
+          })}
+        </div>
+        <ThemeToggle />
       </div>
     </header>
   );
@@ -114,25 +119,26 @@ function MedicineIllustration({ cue }: { cue: string }) {
       {/* Soft circle, top right (approximation of the Figma backdrop) */}
       <div className="absolute -top-7.5 left-30.75 size-65 rounded-full bg-primary/6" />
 
-      {/* The pack. Shrinks on very small phones instead of overflowing */}
-      <div className="absolute left-7.5 top-5.5 h-42.5 w-[calc(100%-62px)] max-w-70 overflow-hidden rounded-[7px] border border-border bg-white shadow-[0_12px_24px_rgba(18,58,37,0.13)]">
-        <div className="flex h-7.25 items-center justify-between bg-primary px-3.75 text-white">
+      {/* The pack. Shrinks on very small phones instead of overflowing.
+          It's a picture of a printed pack, so it keeps its light colours in dark mode. */}
+      <div className="absolute left-7.5 top-5.5 h-42.5 w-[calc(100%-62px)] max-w-70 overflow-hidden rounded-[7px] border border-[#dae4dd] bg-white shadow-[0_12px_24px_rgba(18,58,37,0.13)]">
+        <div className="flex h-7.25 items-center justify-between bg-[#075c45] px-3.75 text-white">
           <span className="text-[11px]">wellora</span>
           <span className="text-[8px]">20 TABLETS</span>
         </div>
         <div className="flex flex-col gap-1.25 px-3.75 pt-3.25">
-          <p className="text-[21px] font-bold text-primary-strong">Paracetamol</p>
-          <p className="text-[15px] font-semibold text-primary">500 mg</p>
-          <div className="h-px w-full bg-border" />
-          <p className="whitespace-pre text-[9px] text-muted">{'A4-5821  ·  EXP 12/2027'}</p>
-          <p className="text-[8px] text-muted">Wellora Pharma Ltd</p>
+          <p className="text-[21px] font-bold text-[#063d31]">Paracetamol</p>
+          <p className="text-[15px] font-semibold text-[#075c45]">500 mg</p>
+          <div className="h-px w-full bg-[#dae4dd]" />
+          <p className="whitespace-pre text-[9px] text-[#5b6d66]">{'A4-5821  ·  EXP 12/2027'}</p>
+          <p className="text-[8px] text-[#5b6d66]">Wellora Pharma Ltd</p>
         </div>
       </div>
 
       {/* White pill overlapping the bottom-left of the pack */}
       <div className="absolute left-7.25 top-46.25 flex max-w-[calc(100%-40px)] items-center gap-1.5 rounded-full bg-white px-2.5 py-1.75">
-        <ScanLine className="size-3.75 shrink-0 text-primary" />
-        <span className="text-[11px] font-semibold text-primary">{cue}</span>
+        <ScanLine className="size-3.75 shrink-0 text-[#075c45]" />
+        <span className="text-[11px] font-semibold text-[#075c45]">{cue}</span>
       </div>
     </div>
   );
@@ -148,6 +154,8 @@ export default function Page() {
       <Header />
 
       <div className="flex flex-col gap-6 py-6">
+        <OfflineBanner />
+
         {/* 1. Intro */}
         <section className="flex flex-col gap-3.5">
           <p className="text-[11px] font-bold text-primary">{t('homeEyebrow', lang)}</p>

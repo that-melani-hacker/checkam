@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import { ShieldCheck } from 'lucide-react';
 import { LanguageToggle } from '@/components/ui/LanguageToggle';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
-/** Owner: Vivian. Logo + English/Pidgin toggle, same as the Home header. */
+/** Owner: Vivian. Logo + English/Pidgin toggle + light/dark switch, same as the Home header. */
 export function AppHeader() {
   return (
     // -mx-6 cancels the layout's px-6 so the bottom border runs edge to edge like Figma
@@ -13,7 +14,10 @@ export function AppHeader() {
         </span>
         <span className="text-[22px] font-bold text-primary-strong">CheckAm</span>
       </Link>
-      <LanguageToggle />
+      <div className="flex items-center gap-2">
+        <LanguageToggle />
+        <ThemeToggle />
+      </div>
     </header>
   );
 }

@@ -20,7 +20,7 @@ const mimeType = types[extname(file).toLowerCase()];
 if (!mimeType) throw new Error("Use a .jpg, .png or .webp photo");
 
 const image = readFileSync(file);
-const response = verifyPack(await extractPackDetails(image, mimeType));
+const response = verifyPack(await extractPackDetails([{ data: image, mimeType }]));
 const path = "data/demo-responses.json";
 const saved = JSON.parse(readFileSync(path, "utf8"));
 saved[hashImage(image)] = response;

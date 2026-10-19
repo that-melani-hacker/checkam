@@ -29,6 +29,15 @@ export const scanUi = {
     en: 'Only the medicine pack, please. Keep faces and personal details out of your photo.',
     pcm: 'Na only the drug pack we need, abeg. No put face or your personal details for the photo.',
   },
+  // Several photos of one pack (not in Figma)
+  addSide: { en: 'Add another side', pcm: 'Snap another side' }, // not in Figma
+  uploadAnother: { en: 'Upload another photo', pcm: 'Upload another photo' }, // not in Figma
+  sidesHint: {
+    en: 'Details on different sides? Add a photo of each side, up to 4.',
+    pcm: 'Details dey different side? Snap each side, reach 4 photos.',
+  }, // not in Figma
+  maxPhotos: { en: 'That’s the most photos for one check.', pcm: 'Na im be the most photos for one check.' }, // not in Figma
+  removePhoto: { en: 'Remove photo', pcm: 'Comot this photo' }, // not in Figma
   notAnImage: { en: 'That file isn’t a photo. Choose a photo of the pack.', pcm: 'That file no be photo. Choose photo of the pack.' }, // not in Figma
 
   // Step 2 · Loading
@@ -50,3 +59,13 @@ export const scanUi = {
     pcm: 'Only name or NAFDAC number no fit prove say drug dey original. We go show you wetin need closer look.',
   },
 } satisfies Record<string, Copy>;
+
+/** "1 photo" / "3 photos" (not in Figma beyond "1 photo"). */
+export function photoCount(n: number, lang: Lang): string {
+  return n === 1 ? scanUi.photoCount[lang] : `${n} photos`; // same in Pidgin
+}
+
+/** "Check this photo" / "Check these 3 photos" (not in Figma beyond one photo). */
+export function checkPhotosLabel(n: number, lang: Lang): string {
+  return n === 1 ? scanUi.checkPhoto[lang] : `Check these ${n} photos`; // same in Pidgin
+}

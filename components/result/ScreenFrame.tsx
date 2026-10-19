@@ -5,6 +5,7 @@ import { Info, ShieldCheck } from 'lucide-react';
 import type { Lang } from '@/lib/types';
 import { useVerify } from '@/lib/state/VerifyContext';
 import { t } from '@/lib/i18n/strings';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
 const LANG_OPTIONS: { value: Lang; label: string }[] = [
   { value: 'en', label: 'English' },
@@ -28,25 +29,28 @@ export function ScreenFrame({ children }: { children: React.ReactNode }) {
           </span>
           <span className="text-[22px] font-bold text-primary-strong">CheckAm</span>
         </Link>
-        <div
-          role="radiogroup"
-          aria-label="Language"
-          className="flex h-11 items-center gap-px rounded-full border border-border bg-subtle p-[3px]"
-        >
-          {LANG_OPTIONS.map((o) => (
-            <button
-              key={o.value}
-              type="button"
-              role="radio"
-              aria-checked={lang === o.value}
-              onClick={() => setLang(o.value)}
-              className={`h-9 rounded-full px-2.5 text-xs focus-visible:outline-2 focus-visible:outline-brand ${
-                lang === o.value ? 'bg-primary text-white' : 'text-muted'
-              }`}
-            >
-              {o.label}
-            </button>
-          ))}
+        <div className="flex items-center gap-2">
+          <div
+            role="radiogroup"
+            aria-label="Language"
+            className="flex h-11 items-center gap-px rounded-full border border-border bg-subtle p-[3px]"
+          >
+            {LANG_OPTIONS.map((o) => (
+              <button
+                key={o.value}
+                type="button"
+                role="radio"
+                aria-checked={lang === o.value}
+                onClick={() => setLang(o.value)}
+                className={`h-9 rounded-full px-2.5 text-xs focus-visible:outline-2 focus-visible:outline-brand ${
+                  lang === o.value ? 'bg-primary text-white' : 'text-muted'
+                }`}
+              >
+                {o.label}
+              </button>
+            ))}
+          </div>
+          <ThemeToggle />
         </div>
       </header>
 

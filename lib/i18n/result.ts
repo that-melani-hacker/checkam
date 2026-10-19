@@ -48,6 +48,16 @@ export const resultUi = {
     pcm: 'We no fit read the expiry date for the pack. NAFDAC record no get batch expiry.',
   },
   pharmacistTitle: { en: 'Confirm with a pharmacist', pcm: 'Ask pharmacist first' },
+
+  // "About this medicine" card (not in Figma: get the Pidgin checked in the review)
+  aboutTitle: { en: 'About this medicine', pcm: 'Wetin this medicine dey do' },
+  aboutLoading: { en: 'Finding information about this medicine…', pcm: 'We dey find information about this medicine…' },
+  aboutUses: { en: 'Commonly used for', pcm: 'People dey use am for' },
+  aboutTips: { en: 'Good to know', pcm: 'Wetin you suppose know' },
+  aboutDisclaimer: {
+    en: 'General information about this type of medicine, not medical advice. Follow the leaflet and ask a pharmacist.',
+    pcm: 'Na general information about this kind medicine, e no be doctor advice. Follow the paper wey dey inside and ask pharmacist.',
+  },
 } satisfies Record<string, Copy>;
 
 /** Row names, the same words in both languages on the Figma frames. */

@@ -5,6 +5,10 @@ import './globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
+// Applies the light/dark choice saved by ThemeToggle before the page paints, so there's no flash.
+// Keep the key in sync with THEME_KEY in components/ui/ThemeToggle.tsx.
+const themeScript = `try{var t=localStorage.getItem('checkam-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}`;
+
 export const metadata: Metadata = {
   title: 'CheckAm',
   description: "Check your drug pack against NAFDAC's records with one photo.",
@@ -14,7 +18,11 @@ export const viewport: Viewport = { width: 'device-width', initialScale: 1 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={inter.variable}>
+    // suppressHydrationWarning: the theme script sets data-theme before React loads
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="font-sans antialiased">
         <VerifyProvider>
           {/* One centered phone-width column on every screen size */}

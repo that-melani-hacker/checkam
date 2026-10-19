@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
@@ -34,15 +34,23 @@ export default function ScanPage() {
   const [errorCode, setErrorCode] = useState<ClientErrorCode>('server_error');
   const [fileError, setFileError] = useState(false);
 
-  // Free the preview URLs when we leave, except the first one if it was handed to the Result screen
+  // Every visit to Scan is a new check. Next.js keeps left pages alive in the background (Activity, with
+  // cacheComponents), so when this page is hidden we start it fresh: back to step 1, no photos.
+  // The preview URLs are freed, except the first one if it was handed to the Result screen.
   const photosRef = useRef<PickedPhoto[]>([]);
   useEffect(() => {
     photosRef.current = photos;
   }, [photos]);
   const handedOff = useRef<string | null>(null);
-  useEffect(
+  useLayoutEffect(
     () => () => {
       photosRef.current.forEach((p) => p.url !== handedOff.current && URL.revokeObjectURL(p.url));
+      photosRef.current = [];
+      handedOff.current = null;
+      setPhotos([]);
+      setPhase('choose');
+      setStep(0);
+      setFileError(false);
     },
     [],
   );

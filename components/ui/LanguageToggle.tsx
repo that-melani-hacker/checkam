@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client';
 
 import { useVerify } from '@/lib/state/VerifyContext';

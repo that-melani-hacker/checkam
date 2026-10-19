@@ -14,7 +14,11 @@ Use null for anything you can't read clearly. Never guess, complete or correct a
 If the photo is not a medicine pack, return null for every key. Never describe any person in the photo.`;
 
 const MODEL = process.env.GEMINI_MODEL || "gemini-3.8-flash";
-const TIMEOUT_MS = 15_000;
+// The phone gives up after 20 seconds, so all attempts together must finish well before that.
+const TOTAL_BUDGET_MS = 17_000;
+// Gemini often answers "high demand" (503) within ~2 seconds; a retry usually succeeds.
+const MIN_RETRY_MS = 4_000;
+const RETRY_PAUSE_MS = 500;
 
 const field = z.string().trim().min(1).nullable().optional().catch(null);
 const schema = z.object({
@@ -67,6 +71,26 @@ export async function extractPackDetails(
   if (!key)
     throw new VerifyError("ai_unavailable", "GEMINI_API_KEY is not set");
 
+  const deadline = Date.now() + TOTAL_BUDGET_MS;
+  for (;;) {
+    try {
+      return await requestOnce(image, mimeType, key, deadline - Date.now());
+    } catch (err) {
+      const retryable = err instanceof VerifyError && err.code === "ai_unavailable";
+      if (!retryable || deadline - Date.now() < MIN_RETRY_MS + RETRY_PAUSE_MS) throw err;
+      console.warn(`[verify] retrying Gemini: ${err.message.slice(0, 120)}`);
+      await new Promise((r) => setTimeout(r, RETRY_PAUSE_MS));
+    }
+  }
+}
+
+/** One Gemini call, given the time left. Throws VerifyError on any failure. */
+async function requestOnce(
+  image: Buffer,
+  mimeType: string,
+  key: string,
+  timeoutMs: number,
+): Promise<Extracted> {
   let res: Response;
   try {
     res = await fetch(
@@ -74,7 +98,7 @@ export async function extractPackDetails(
       {
         method: "POST",
         headers: { "Content-Type": "application/json", "x-goog-api-key": key },
-        signal: AbortSignal.timeout(TIMEOUT_MS),
+        signal: AbortSignal.timeout(timeoutMs),
         body: JSON.stringify({
           contents: [
             {

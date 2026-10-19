@@ -13,7 +13,7 @@ Return JSON with exactly these keys: name, strength, manufacturer, nafdac_no, ex
 Use null for anything you can't read clearly. Never guess, complete or correct a value.
 If the photo is not a medicine pack, return null for every key. Never describe any person in the photo.`;
 
-const MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+const MODEL = process.env.GEMINI_MODEL || "gemini-3.8-flash";
 const TIMEOUT_MS = 15_000;
 
 const field = z.string().trim().min(1).nullable().optional().catch(null);

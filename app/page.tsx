@@ -6,6 +6,7 @@ import { t } from '@/lib/i18n/strings';
 import type { Lang } from '@/lib/types';
 import { HowItWorksStrip } from '@/components/home/HowItWorksStrip';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { OfflineBanner } from '@/components/home/OfflineBanner';
 
 /** Owner: Albert. Home, built from the Figma mobile frames (English + Pidgin). */
 
@@ -153,6 +154,8 @@ export default function Page() {
       <Header />
 
       <div className="flex flex-col gap-6 py-6">
+        <OfflineBanner />
+
         {/* 1. Intro */}
         <section className="flex flex-col gap-3.5">
           <p className="text-[11px] font-bold text-primary">{t('homeEyebrow', lang)}</p>

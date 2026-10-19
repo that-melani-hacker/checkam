@@ -15,6 +15,7 @@ import { PhotoTips } from '@/components/scan/PhotoTips';
 import { CameraUpload } from '@/components/scan/CameraUpload';
 import { LoadingView } from '@/components/scan/LoadingView';
 import { ErrorScreen } from '@/components/home/ErrorScreen';
+import { OfflineBanner } from '@/components/home/OfflineBanner';
 
 type Phase = 'choose' | 'checking' | 'error';
 
@@ -109,8 +110,8 @@ export default function ScanPage() {
 
       {phase === 'error' && (
         <div className="py-6">
-          {/* Retry keeps the photo, so the user can press Check again or retake */}
-          <ErrorScreen code={errorCode} onRetry={() => setPhase('choose')} />
+          {/* The photos are kept: Try again sends them again, or go back to change them */}
+          <ErrorScreen code={errorCode} onRetry={handleCheck} onChoosePhoto={() => setPhase('choose')} />
         </div>
       )}
 
@@ -120,6 +121,8 @@ export default function ScanPage() {
             <ArrowLeft size={18} aria-hidden />
             {scanUi.back[lang]}
           </Link>
+
+          <OfflineBanner />
 
           <section className="flex flex-col gap-3">
             <p className="text-[11px] font-bold text-primary">{scanUi.eyebrow[lang]}</p>

@@ -1,5 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { VerifyError } from "@/lib/errors";
+import type { UploadImage } from "@/lib/types";
 
 const MODEL = process.env.CLAUDE_MODEL || "claude-opus-5-5";
 
@@ -31,13 +32,12 @@ export class ClaudeKeyError extends VerifyError {
 }
 
 /**
- * Reads the pack photo with Claude and returns the raw JSON text for parseExtraction().
+ * Reads the pack photos (one per side) with Claude and returns the raw JSON text for parseExtraction().
  * Reading printed text is a simple job, so effort is low to keep the check fast.
  * Throws VerifyError('rate_limited' | 'ai_unavailable') like the Gemini reader.
  */
 export async function readPackWithClaude(
-  image: Buffer,
-  mimeType: string,
+  images: UploadImage[],
   prompt: string,
   timeoutMs: number,
 ): Promise<string> {
@@ -60,10 +60,14 @@ export async function readPackWithClaude(
           {
             role: "user",
             content: [
-              {
-                type: "image",
-                source: { type: "base64", media_type: mimeType as ImageType, data: image.toString("base64") },
-              },
+              ...images.map((img) => ({
+                type: "image" as const,
+                source: {
+                  type: "base64" as const,
+                  media_type: img.mimeType as ImageType,
+                  data: img.data.toString("base64"),
+                },
+              })),
               { type: "text", text: prompt },
             ],
           },

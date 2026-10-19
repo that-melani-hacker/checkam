@@ -67,11 +67,20 @@ export interface ErrorBody {
   error: { code: ErrorCode; message: string };
 }
 
-export interface Upload {
-  image: Buffer;
+export interface UploadImage {
+  data: Buffer;
   mimeType: string;
+}
+
+export interface Upload {
+  image: Buffer; // the first photo (kept for code that only needs one)
+  mimeType: string;
+  images: UploadImage[]; // every photo, 1 to MAX_PHOTOS, different sides of the same pack
   tag: Nullable<string>;
 }
+
+/** Most photos one check accepts (front, back, sides). */
+export const MAX_PHOTOS = 4;
 
 export interface CheckLog {
   id: string; // uuid

@@ -1,9 +1,10 @@
 import { z } from "zod";
-import type { Extracted } from "@/lib/types";
+import type { Extracted, UploadImage } from "@/lib/types";
 import { VerifyError } from "@/lib/errors";
 import { ClaudeKeyError, readPackWithClaude } from "@/lib/ai/claude";
 
-export const EXTRACTION_PROMPT = `You read medicine packaging from a photo. Copy only what is printed on the pack.
+export const EXTRACTION_PROMPT = `You read medicine packaging from one or more photos of the same pack, often different sides of it.
+Combine what is printed across all the photos. Copy only what is printed on the pack.
 Return JSON with exactly these keys: name, strength, manufacturer, nafdac_no, expiry, batch.
 - name: the brand and generic name as printed, for example "Emzor Paracetamol".
 - strength: as printed, for example "500 mg" or "250 mg/5 ml".
@@ -12,7 +13,8 @@ Return JSON with exactly these keys: name, strength, manufacturer, nafdac_no, ex
 - expiry: the expiry date written as MM/YYYY.
 - batch: the batch or lot number as printed.
 Use null for anything you can't read clearly. Never guess, complete or correct a value.
-If the photo is not a medicine pack, return null for every key. Never describe any person in the photo.`;
+If the photos are not a medicine pack, or show more than one different product, return null for every key.
+Never describe any person in the photos.`;
 
 const MODEL = process.env.GEMINI_MODEL || "gemini-3.8-flash";
 // The phone gives up after 20 seconds, so all attempts together must finish well before that.
@@ -64,10 +66,7 @@ export function parseExtraction(raw: string): Extracted {
 }
 
 /** Owner: Fortunatus. Sends the photo and EXTRACTION_PROMPT to Gemini. Tests: B1-B8, C4, C5 */
-export async function extractPackDetails(
-  image: Buffer,
-  mimeType: string,
-): Promise<Extracted> {
+export async function extractPackDetails(images: UploadImage[]): Promise<Extracted> {
   // Claude reads the pack when its key is set; otherwise Gemini does.
   const claudeKey = process.env.ANTHROPIC_API_KEY;
   const geminiKey = process.env.GEMINI_API_KEY;
@@ -76,8 +75,8 @@ export async function extractPackDetails(
   let useClaude = Boolean(claudeKey);
   const readOnce = (timeoutMs: number) =>
     useClaude
-      ? readPackWithClaude(image, mimeType, EXTRACTION_PROMPT, timeoutMs).then(parseExtraction)
-      : requestOnce(image, mimeType, geminiKey!, timeoutMs);
+      ? readPackWithClaude(images, EXTRACTION_PROMPT, timeoutMs).then(parseExtraction)
+      : requestOnce(images, geminiKey!, timeoutMs);
 
   const deadline = Date.now() + TOTAL_BUDGET_MS;
   for (;;) {
@@ -102,8 +101,7 @@ export async function extractPackDetails(
 
 /** One Gemini call, given the time left. Throws VerifyError on any failure. */
 async function requestOnce(
-  image: Buffer,
-  mimeType: string,
+  images: UploadImage[],
   key: string,
   timeoutMs: number,
 ): Promise<Extracted> {
@@ -120,12 +118,12 @@ async function requestOnce(
             {
               parts: [
                 { text: EXTRACTION_PROMPT },
-                {
+                ...images.map((img) => ({
                   inline_data: {
-                    mime_type: mimeType,
-                    data: image.toString("base64"),
+                    mime_type: img.mimeType,
+                    data: img.data.toString("base64"),
                   },
-                },
+                })),
               ],
             },
           ],

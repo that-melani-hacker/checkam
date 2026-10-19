@@ -72,11 +72,12 @@ export async function resizeImage(file: File, maxWidth = 1600): Promise<Blob> {
 }
 
 /** Owner: Vivian. Tests: D8-D10. POST to /api/verify; throw ClientError on error codes, after 20 seconds, or when offline. */
-export async function verifyPhoto(photo: Blob, tag: Nullable<string>): Promise<VerifyResponse> {
+export async function verifyPhoto(photos: Blob | Blob[], tag: Nullable<string>): Promise<VerifyResponse> {
   if (!navigator.onLine) throw new ClientError('offline');
 
+  // One `image` field per photo: different sides of the same pack.
   const body = new FormData();
-  body.append('image', photo, 'pack.jpg');
+  (Array.isArray(photos) ? photos : [photos]).forEach((photo, i) => body.append('image', photo, `pack-${i + 1}.jpg`));
   if (tag) body.append('tag', tag);
 
   const controller = new AbortController();

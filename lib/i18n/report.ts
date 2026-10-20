@@ -5,6 +5,7 @@ type Copy = Record<Lang, string>;
 
 export const reportUi = {
   back: { en: 'Back to result', pcm: 'Go back to result' },
+  nothingYet: { en: 'Nothing to report yet. Scan a drug first.', pcm: 'Nothing to report yet. Scan drug first.' },
   eyebrow: { en: 'REPORT TO NAFDAC', pcm: 'REPORT AM TO NAFDAC' },
   title: { en: 'Help flag a concern.', pcm: 'Help us flag am.' },
   intro: {

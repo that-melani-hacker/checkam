@@ -67,11 +67,28 @@ export interface ErrorBody {
   error: { code: ErrorCode; message: string };
 }
 
-export interface Upload {
-  image: Buffer;
+export interface UploadImage {
+  data: Buffer;
   mimeType: string;
+}
+
+export interface Upload {
+  image: Buffer; // the first photo (kept for code that only needs one)
+  mimeType: string;
+  images: UploadImage[]; // every photo, 1 to MAX_PHOTOS, different sides of the same pack
   tag: Nullable<string>;
 }
+
+/** "About this medicine" card on the Result screen (POST /api/explain). General information only. */
+export interface MedicineText {
+  summary: string; // one or two plain sentences: what the medicine is
+  uses: string[]; // what it's commonly used for
+  tips: string[]; // general care points (never doses)
+}
+export type MedicineInfo = { known: false } | { known: true; en: MedicineText; pcm: MedicineText };
+
+/** Most photos one check accepts (front, back, sides). */
+export const MAX_PHOTOS = 4;
 
 export interface CheckLog {
   id: string; // uuid

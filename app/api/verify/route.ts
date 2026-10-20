@@ -12,7 +12,7 @@ export async function POST(req: Request): Promise<Response> {
     const upload = await parseUpload(req);
     const response =
       getDemoResponse(upload.image) ??
-      verifyPack(await extractPackDetails(upload.image, upload.mimeType));
+      verifyPack(await extractPackDetails(upload.images));
     await saveCheckLog(response, upload.tag); // never throws
     return NextResponse.json(response);
   } catch (err) {

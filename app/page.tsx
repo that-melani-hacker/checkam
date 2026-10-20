@@ -5,6 +5,8 @@ import { useVerify } from '@/lib/state/VerifyContext';
 import { t } from '@/lib/i18n/strings';
 import type { Lang } from '@/lib/types';
 import { HowItWorksStrip } from '@/components/home/HowItWorksStrip';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { OfflineBanner } from '@/components/home/OfflineBanner';
 
 /** Owner: Albert. Home, built from the Figma mobile frames (English + Pidgin), responsive up to laptop. */
 

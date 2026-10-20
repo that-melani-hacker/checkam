@@ -13,7 +13,8 @@ export function AppHeader() {
           <span className="flex size-10 items-center justify-center rounded-2xl bg-primary shadow-sm">
             <ShieldCheck size={22} className="text-white" aria-hidden />
           </span>
-          <span className="text-[22px] font-bold tracking-tight text-primary-strong md:text-2xl">CheckAm</span>
+          {/* Very small phones show just the logo so the toggles fit; the link still says "CheckAm home" */}
+          <span className="hidden text-[22px] font-bold tracking-tight text-primary-strong min-[380px]:inline md:text-2xl">CheckAm</span>
         </Link>
         <div className="flex items-center gap-2">
           <LanguageToggle />

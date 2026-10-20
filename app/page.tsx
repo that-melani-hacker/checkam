@@ -143,14 +143,14 @@ export default function Page() {
         {/* ── How it works + reminder ──
             Phone/tablet: stacked. Laptop: steps on the left, reminder card on the right. */}
         <div className="flex flex-col gap-6 md:gap-8 lg:grid lg:grid-cols-[1fr_380px] lg:items-start lg:gap-16">
-          <section className="card flex flex-col gap-5 p-5 md:gap-6 md:p-8" aria-labelledby="how-it-works">
+          <section className="card flex flex-col gap-6 px-6 py-7 md:p-8" aria-labelledby="how-it-works">
             <h2 id="how-it-works" className="text-xl font-bold text-ink md:text-2xl">
               {t('homeStepsTitle', lang)}
             </h2>
             <HowItWorksStrip />
           </section>
 
-          <section className="card flex items-start gap-3.5 p-5 md:p-8">
+          <section className="card flex items-start gap-4 px-6 py-7 md:p-8">
             <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-success-tint text-brand">
               <ShieldCheck className="size-6" />
             </span>

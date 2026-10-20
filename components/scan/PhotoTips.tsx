@@ -27,7 +27,7 @@ export function PhotoTips() {
       <ol className="mt-4 flex flex-col gap-3.5">
         {items.map(({ label, hint }, i) => (
           <li key={label} className="flex items-start gap-3.5">
-            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary text-[15px] font-bold text-white">
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-highlight text-[15px] font-bold text-[#161b33]">
               {i + 1}
             </span>
             <div className="flex min-w-0 flex-col gap-0.5">

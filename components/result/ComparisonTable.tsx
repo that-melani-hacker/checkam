@@ -63,7 +63,7 @@ export function ComparisonTable({ checks, verdict }: Props) {
               <tr>
                 <th colSpan={2} scope="colgroup" className="border-t border-border px-4 pt-4 pb-2 text-left md:px-6">
                   <span className="flex items-center justify-between gap-2">
-                    <span className="text-[13px] font-bold tracking-wide text-muted uppercase">{fieldLabel[c.field][lang]}</span>
+                    <span className="text-sm font-bold text-muted">{fieldLabel[c.field][lang]}</span>
                     <span className={`flex shrink-0 items-center gap-1 text-[13px] font-semibold ${statusColor[`${c.ok}`]}`}>
                       <StatusIcon size={14} strokeWidth={2.5} aria-hidden />
                       {statusLabel(c, verdict, lang)}

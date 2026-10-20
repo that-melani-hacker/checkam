@@ -71,7 +71,7 @@ export function HowItWorksStrip() {
     <ol className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-5">
       {STEPS.map(({ icon, title, text }) => (
         <li key={title} className="flex min-w-0 items-start gap-3.5 sm:flex-col sm:gap-3">
-          <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-success-tint text-brand">
+          <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-brand-tint text-brand">
             {icon}
           </span>
           <div className="flex min-w-0 flex-col gap-1">

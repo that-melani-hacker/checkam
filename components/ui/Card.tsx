@@ -32,7 +32,7 @@ export function Card({ tone, outlined = false, icon, title, className = '', chil
   return (
     <div className={`flex items-start gap-3.5 ${classes}`}>
       {icon && (
-        <span className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-success-tint text-brand">{icon}</span>
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-brand-tint text-brand">{icon}</span>
       )}
       <div className="flex min-w-0 flex-1 flex-col gap-1.5">
         {title && <h2 className="text-base font-semibold text-ink">{title}</h2>}

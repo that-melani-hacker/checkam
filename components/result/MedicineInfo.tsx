@@ -56,7 +56,7 @@ export function MedicineInfo({ name, strength, packName }: Props) {
   return (
     <section className="card flex flex-col gap-5 p-5 md:p-7" aria-live="polite">
       <h2 className="flex items-center gap-3 text-lg font-bold text-ink md:text-xl">
-        <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-success-tint text-brand">
+        <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-brand-tint text-brand">
           <BookOpen size={22} aria-hidden />
         </span>
         {resultUi.aboutTitle[lang]}
@@ -64,7 +64,7 @@ export function MedicineInfo({ name, strength, packName }: Props) {
       <p className="text-base leading-relaxed text-ink md:text-[17px]">{text.summary}</p>
 
       <div className="flex flex-col gap-1.5">
-        <h3 className="text-[13px] font-bold tracking-wide text-muted uppercase">{resultUi.aboutUses[lang]}</h3>
+        <h3 className="text-sm font-bold text-muted">{resultUi.aboutUses[lang]}</h3>
         <ul className="flex list-disc flex-col gap-1.5 pl-5 text-base leading-relaxed text-ink marker:text-brand">
           {text.uses.map((u) => (
             <li key={u}>{u}</li>
@@ -74,7 +74,7 @@ export function MedicineInfo({ name, strength, packName }: Props) {
 
       {text.tips.length > 0 && (
         <div className="flex flex-col gap-1.5">
-          <h3 className="text-[13px] font-bold tracking-wide text-muted uppercase">{resultUi.aboutTips[lang]}</h3>
+          <h3 className="text-sm font-bold text-muted">{resultUi.aboutTips[lang]}</h3>
           <ul className="flex list-disc flex-col gap-1.5 pl-5 text-base leading-relaxed text-ink marker:text-brand">
             {text.tips.map((tip) => (
               <li key={tip}>{tip}</li>

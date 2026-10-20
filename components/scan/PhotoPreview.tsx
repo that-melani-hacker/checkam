@@ -20,7 +20,7 @@ export function PhotoPreview({ photos, onRemove }: Props) {
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="relative flex aspect-[342/278] w-full items-center justify-center overflow-hidden rounded-3xl bg-success-tint p-5 md:p-6">
+      <div className="relative flex aspect-[342/278] w-full items-center justify-center overflow-hidden rounded-3xl bg-brand-tint p-5 md:p-6">
         {latest ? (
           // eslint-disable-next-line @next/next/no-img-element -- blob: URL, next/image can't optimise it
           <img

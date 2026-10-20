@@ -56,35 +56,36 @@ const ImageIcon = ({ className }: { className: string }) => (
 // ───────── Hero illustration: a FICTIONAL pack (decorative, so its text isn't translated) ─────────
 // The pack is drawn at phone size, then scaled up with a transform on tablet/laptop so the
 // text stays in proportion. The panel's height grows with the breakpoint to make room.
+// It's a picture of a printed pack, so it keeps fixed colours in light and dark mode.
 function MedicineIllustration({ cue }: { cue: string }) {
   return (
     <div
       aria-hidden="true"
-      className="relative flex h-[230px] w-full items-center justify-center overflow-hidden rounded-[20px] bg-success-tint pb-5 md:h-[300px] lg:h-[400px] lg:rounded-[28px]"
+      className="relative flex h-[230px] w-full items-center justify-center overflow-hidden rounded-[20px] bg-brand-tint pb-5 md:h-[300px] lg:h-[400px] lg:rounded-[28px]"
     >
       {/* Soft circle, top right (approximation of the Figma backdrop) */}
       <div className="absolute -right-10 -top-[30px] size-[260px] rounded-full bg-primary/[0.06] md:-right-16 md:-top-16 md:size-80 lg:size-[420px]" />
 
       {/* Pack + pill share one box so they scale together. Width shrinks on tiny phones. */}
       <div className="relative h-[170px] w-[calc(100%-62px)] max-w-[280px] md:scale-125 lg:scale-[1.45]">
-        <div className="absolute inset-0 overflow-hidden rounded-[7px] border border-border bg-white shadow-[0_12px_24px_rgba(18,58,37,0.13)]">
-          <div className="flex h-[29px] items-center justify-between bg-primary px-[15px] text-white">
+        <div className="absolute inset-0 overflow-hidden rounded-[7px] border border-[#dde2ee] bg-white shadow-[0_12px_24px_rgba(20,28,70,0.14)]">
+          <div className="flex h-[29px] items-center justify-between bg-[#1e2a78] px-[15px] text-white">
             <span className="text-[11px]">wellora</span>
             <span className="text-[8px]">20 TABLETS</span>
           </div>
           <div className="flex flex-col gap-[5px] px-[15px] pt-[13px]">
-            <p className="text-[21px] font-bold text-primary-strong">Paracetamol</p>
-            <p className="text-[15px] font-semibold text-primary">500 mg</p>
-            <div className="h-px w-full bg-border" />
-            <p className="whitespace-pre text-[9px] text-muted">{'A4-5821  ·  EXP 12/2027'}</p>
-            <p className="text-[8px] text-muted">Wellora Pharma Ltd</p>
+            <p className="text-[21px] font-bold text-[#141c55]">Paracetamol</p>
+            <p className="text-[15px] font-semibold text-[#1e2a78]">500 mg</p>
+            <div className="h-px w-full bg-[#dde2ee]" />
+            <p className="whitespace-pre text-[9px] text-[#4e566f]">{'A4-5821  ·  EXP 12/2027'}</p>
+            <p className="text-[8px] text-[#4e566f]">Wellora Pharma Ltd</p>
           </div>
         </div>
 
         {/* White pill overlapping the bottom-left of the pack */}
         <div className="absolute -left-px top-[163px] flex max-w-[calc(100%+10px)] items-center gap-1.5 rounded-full bg-white px-2.5 py-[7px]">
-          <ScanLine className="size-[15px] shrink-0 text-primary" />
-          <span className="text-[11px] font-semibold text-primary">{cue}</span>
+          <ScanLine className="size-[15px] shrink-0 text-[#1e2a78]" />
+          <span className="text-[11px] font-semibold text-[#1e2a78]">{cue}</span>
         </div>
       </div>
     </div>
@@ -112,7 +113,7 @@ export default function Page() {
               {t('homeTitleLine1', lang)}
               <br />
               {t('homeTitleLine2', lang)}
-              <span className="text-brand">{t('homeTitleAccent', lang)}</span>
+              <span className="marker text-brand">{t('homeTitleAccent', lang)}</span>
             </h1>
             <p className="text-[17px] leading-relaxed text-muted md:max-w-xl md:text-lg lg:text-xl">
               {t('homeIntro', lang)}
@@ -128,7 +129,7 @@ export default function Page() {
           <div className="flex flex-col gap-2.5 md:mx-auto md:w-full md:max-w-sm lg:col-start-1 lg:row-start-2 lg:mx-0 lg:self-start">
             <Link
               href="/scan"
-              className="flex min-h-15 w-full items-center justify-center gap-2.5 rounded-2xl border border-primary bg-primary px-5 text-lg font-semibold text-white shadow-[0_10px_24px_-10px_rgba(7,92,69,0.7)] transition hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand active:scale-[0.99]"
+              className="flex min-h-15 w-full items-center justify-center gap-2.5 rounded-2xl border border-primary bg-primary px-5 text-lg font-semibold text-white shadow-[0_10px_24px_-10px_rgba(30,42,120,0.55)] transition hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand active:scale-[0.99]"
             >
               <ScanLine className="size-6" />
               {t('scanCta', lang)}
@@ -151,7 +152,7 @@ export default function Page() {
           </section>
 
           <section className="card flex items-start gap-4 px-6 py-7 md:p-8">
-            <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-success-tint text-brand">
+            <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-brand-tint text-brand">
               <ShieldCheck className="size-6" />
             </span>
             <div className="flex min-w-0 flex-1 flex-col gap-1.5 md:gap-2">

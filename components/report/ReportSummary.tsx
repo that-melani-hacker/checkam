@@ -12,7 +12,7 @@ const compared: Field[] = ['name', 'strength', 'manufacturer'];
 function Detail({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex flex-col gap-[5px]">
-      <p className="text-[13px] font-semibold tracking-wide text-muted uppercase">{label}</p>
+      <p className="text-sm font-semibold text-muted">{label}</p>
       <p className="text-base leading-snug break-words text-ink md:text-[17px]">{value}</p>
     </div>
   );
@@ -50,7 +50,7 @@ export function ReportSummary({ result, photoUrl }: Props) {
       <div className="flex flex-col gap-5 p-5 md:p-7">
         <div className="flex items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element -- local blob URL from the user's camera */}
-          <img src={photoUrl} alt="" className="size-18 shrink-0 rounded-2xl bg-success-tint object-cover shadow-sm" />
+          <img src={photoUrl} alt="" className="size-18 shrink-0 rounded-2xl bg-brand-tint object-cover shadow-sm" />
           <p className="text-sm text-muted">{reportUi.photo[lang]}</p>
         </div>
 

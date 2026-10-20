@@ -92,7 +92,7 @@ export default function ReportPage() {
             </div>
 
             <aside className="card flex items-start gap-3.5 p-5 md:p-6">
-              <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-success-tint text-brand">
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-brand-tint text-brand">
                 <Package size={22} aria-hidden />
               </span>
               <div className="flex flex-col gap-1.5">

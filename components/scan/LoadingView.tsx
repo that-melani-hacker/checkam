@@ -20,7 +20,7 @@ export function LoadingView({ step }: Props) {
       {/* Ring: a light track with a 3/4 green arc that spins slowly */}
       <div className="relative mx-auto size-35">
         <svg viewBox="0 0 140 140" className="size-full animate-[spin_1.6s_linear_infinite] motion-reduce:animate-none" aria-hidden>
-          <circle cx="70" cy="70" r="64" fill="none" strokeWidth="8" className="stroke-success-tint" />
+          <circle cx="70" cy="70" r="64" fill="none" strokeWidth="8" className="stroke-brand-tint" />
           <circle
             cx="70"
             cy="70"
@@ -32,7 +32,7 @@ export function LoadingView({ step }: Props) {
             className="stroke-primary"
           />
         </svg>
-        <div className="absolute inset-0 m-auto flex size-19 items-center justify-center rounded-[20px] bg-success-tint">
+        <div className="absolute inset-0 m-auto flex size-19 items-center justify-center rounded-[20px] bg-brand-tint">
           <ScanLine size={30} className="text-primary" aria-hidden />
         </div>
       </div>

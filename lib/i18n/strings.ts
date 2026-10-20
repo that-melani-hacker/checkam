@@ -9,7 +9,7 @@ export const strings = {
   homeEyebrow: { en: 'SMALL CHECK. IMPORTANT PEACE OF MIND.', pcm: 'SMALL CHECK. BIG PEACE OF MIND.' },
   homeTitleLine1: { en: 'Is your drug', pcm: 'Your drug dey' },
   homeTitleLine2: { en: 'original? ', pcm: 'original? ' },
-  homeTitleAccent: { en: 'Check am.', pcm: 'Check am.' },
+  homeTitleAccent: { en: 'CheckAm.', pcm: 'CheckAm.' }, // the app's name
   homeIntro: {
     en: 'Take a photo of the pack. Understand what matches, what doesn’t, and what to do next.',
     pcm: 'Snap the pack. See wetin match, wetin no match, and wetin you go do next.',

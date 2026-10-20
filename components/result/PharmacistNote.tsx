@@ -12,7 +12,7 @@ export function PharmacistNote({ verdict }: Props) {
   const { lang } = useVerify();
   return (
     <aside className="card flex items-start gap-3.5 p-5 md:p-6">
-      <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-success-tint text-brand">
+      <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-brand-tint text-brand">
         <MessageCircle size={22} aria-hidden />
       </span>
       <div className="flex min-w-0 flex-1 flex-col gap-1.5">

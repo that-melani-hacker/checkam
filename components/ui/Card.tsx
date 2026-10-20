@@ -1,7 +1,7 @@
 import type { Verdict } from '@/lib/types';
 
 type Props = {
-  /** Tints the card by verdict. Leave it out for the plain grey card. */
+  /** Tints the card by verdict. Leave it out for the plain white raised card. */
   tone?: Verdict;
   /** White card with a border instead of a fill, like the pack & record table. */
   outlined?: boolean;
@@ -22,19 +22,21 @@ const tones: Record<Verdict, string> = {
 
 /** Owner: Vivian. Tinted by verdict. */
 export function Card({ tone, outlined = false, icon, title, className = '', children }: Props) {
-  const surface = outlined ? 'border border-border bg-white' : tone ? tones[tone] : 'bg-subtle';
-  const classes = `rounded-[14px] p-4 ${surface} ${className}`;
+  const surface = outlined || !tone ? 'card' : `rounded-3xl ${tones[tone]}`;
+  const classes = `p-5 md:p-6 ${surface} ${className}`;
 
   // Plain card: whatever you put inside
   if (!icon && !title) return <div className={classes}>{children}</div>;
 
   // Info card: icon on the left, title and body on the right
   return (
-    <div className={`flex items-start gap-2.75 ${classes}`}>
-      {icon && <span className="mt-px shrink-0 text-primary">{icon}</span>}
-      <div className="flex min-w-0 flex-1 flex-col gap-1.25">
-        {title && <h2 className="text-sm font-semibold text-ink">{title}</h2>}
-        <div className="text-[13px] leading-normal text-muted">{children}</div>
+    <div className={`flex items-start gap-3.5 ${classes}`}>
+      {icon && (
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-success-tint text-brand">{icon}</span>
+      )}
+      <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+        {title && <h2 className="text-base font-semibold text-ink">{title}</h2>}
+        <div className="text-[15px] leading-relaxed text-muted">{children}</div>
       </div>
     </div>
   );

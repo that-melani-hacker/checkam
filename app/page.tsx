@@ -3,20 +3,11 @@
 import Link from 'next/link';
 import { useVerify } from '@/lib/state/VerifyContext';
 import { t } from '@/lib/i18n/strings';
-import type { Lang } from '@/lib/types';
 import { HowItWorksStrip } from '@/components/home/HowItWorksStrip';
-import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { PageShell } from '@/components/ui/PageShell';
 import { OfflineBanner } from '@/components/home/OfflineBanner';
 
 /** Owner: Albert. Home, built from the Figma mobile frames (English + Pidgin), responsive up to laptop. */
-
-// ───────── Width system (mobile first) ─────────
-// The layout's <main> caps every page at a phone-width column, so Home lifts itself out of that cap
-// (see the absolute wrapper in <Page>) and sets its own widths:
-//   base  (<768px)   phone:  448px column, 24px side padding   (the Figma frames)
-//   md    (>=768px)  tablet: 672px column, 40px padding
-//   lg    (>=1024px) laptop: 1152px column, 48px padding, two-column hero
-const CONTAINER = 'mx-auto w-full max-w-md px-4 min-[360px]:px-6 sm:max-w-xl sm:px-8 md:max-w-2xl md:px-10 lg:max-w-6xl lg:px-12';
 
 // ───────── Icons (Lucide paths, inline so no extra package is needed) ─────────
 // Wrapper: pass a size class (e.g. "size-5") and the paths as children.
@@ -62,63 +53,6 @@ const ImageIcon = ({ className }: { className: string }) => (
   </Svg>
 );
 
-const InfoIcon = ({ className }: { className: string }) => (
-  <Svg className={className}>
-    <circle cx="12" cy="12" r="10" />
-    <path d="M12 16v-4" />
-    <path d="M12 8h.01" />
-  </Svg>
-);
-
-// ───────── Header: logo + English/Pidgin pill ─────────
-// TODO: when Vivian finishes components/ui/LanguageToggle.tsx, swap the pill for <LanguageToggle />.
-const LANG_OPTIONS: { value: Lang; label: string }[] = [
-  { value: 'en', label: 'English' },
-  { value: 'pcm', label: 'Pidgin' },
-];
-
-function Header() {
-  const { lang, setLang } = useVerify();
-
-  return (
-    // Outer element = full-width border line. Inner div = the centred content column.
-    <header className="border-b border-border">
-      <div className={`${CONTAINER} flex h-20 items-center justify-between gap-3`}>
-        <Link href="/" className="flex items-center gap-[7px]" aria-label="CheckAm home">
-          <span className="flex h-[34px] w-[30px] items-center justify-center rounded-[10px] bg-primary">
-            <ShieldCheck className="size-[21px] text-white" />
-          </span>
-          <span className="text-[22px] font-bold text-primary-strong">CheckAm</span>
-        </Link>
-
-        {/* The selected language is the filled green pill */}
-        <div
-          role="group"
-          aria-label="Language"
-          className="flex h-11 items-center gap-px rounded-full border border-border bg-subtle p-[3px]"
-        >
-          {LANG_OPTIONS.map(({ value, label }) => {
-            const selected = lang === value;
-            return (
-              <button
-                key={value}
-                type="button"
-                aria-pressed={selected}
-                onClick={() => setLang(value)}
-                className={`h-9 rounded-full px-[10px] text-xs transition-colors focus-visible:outline-2 focus-visible:outline-primary md:px-3.5 md:text-sm ${
-                  selected ? 'bg-primary text-white' : 'text-muted hover:text-ink'
-                }`}
-              >
-                {label}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-    </header>
-  );
-}
-
 // ───────── Hero illustration: a FICTIONAL pack (decorative, so its text isn't translated) ─────────
 // The pack is drawn at phone size, then scaled up with a transform on tablet/laptop so the
 // text stays in proportion. The panel's height grows with the breakpoint to make room.
@@ -162,27 +96,25 @@ export default function Page() {
   const { lang } = useVerify();
 
   return (
-    // `absolute inset-x-0 top-0` pulls the page out of the layout's phone-width <main>
-    // and stretches it across the whole viewport (without causing sideways scroll).
-    // Each section then centres itself with CONTAINER. min-h-dvh + mt-auto pins the footer to the bottom.
-    <div lang={lang === 'pcm' ? 'pcm' : 'en'} className="absolute inset-x-0 top-0 flex min-h-dvh flex-col">
-      <Header />
+    // PageShell gives the shared sticky header, the responsive page column and the footer.
+    <PageShell>
+      <div className="flex flex-col gap-8 md:gap-12 lg:gap-16">
+        <OfflineBanner />
 
-      <div className={`${CONTAINER} flex flex-col gap-6 py-6 md:gap-10 md:py-10 lg:gap-16 lg:py-16`}>
         {/* ── Hero ──
             Phone/tablet: one column in this order: intro, illustration, button.
             Laptop: two columns. Intro + button on the left, illustration on the right. */}
         <div className="grid grid-cols-1 gap-6 md:gap-8 lg:grid-cols-2 lg:grid-rows-[auto_auto] lg:items-center lg:gap-x-16 lg:gap-y-8">
           {/* 1. Intro */}
           <section className="flex flex-col gap-3.5 md:gap-4 lg:col-start-1 lg:row-start-1 lg:self-end">
-            <p className="text-[11px] font-bold text-primary md:text-xs">{t('homeEyebrow', lang)}</p>
-            <h1 className="text-[30px] font-bold leading-[1.16] text-ink min-[360px]:text-[34px] md:text-5xl md:leading-[1.1] lg:text-6xl">
+            <p className="text-[13px] font-bold tracking-wide text-brand md:text-sm">{t('homeEyebrow', lang)}</p>
+            <h1 className="text-[32px] font-bold leading-[1.12] tracking-tight text-ink min-[360px]:text-[36px] md:text-5xl md:leading-[1.08] lg:text-6xl">
               {t('homeTitleLine1', lang)}
               <br />
               {t('homeTitleLine2', lang)}
-              <span className="text-primary">{t('homeTitleAccent', lang)}</span>
+              <span className="text-brand">{t('homeTitleAccent', lang)}</span>
             </h1>
-            <p className="text-base leading-[1.55] text-muted md:max-w-xl md:text-lg lg:text-xl">
+            <p className="text-[17px] leading-relaxed text-muted md:max-w-xl md:text-lg lg:text-xl">
               {t('homeIntro', lang)}
             </p>
           </section>
@@ -196,13 +128,13 @@ export default function Page() {
           <div className="flex flex-col gap-2.5 md:mx-auto md:w-full md:max-w-sm lg:col-start-1 lg:row-start-2 lg:mx-0 lg:self-start">
             <Link
               href="/scan"
-              className="flex h-14 w-full items-center justify-center gap-2.5 rounded-[14px] border border-primary bg-primary px-4 text-base font-semibold text-white transition-colors hover:bg-primary-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              className="flex min-h-15 w-full items-center justify-center gap-2.5 rounded-2xl border border-primary bg-primary px-5 text-lg font-semibold text-white shadow-[0_10px_24px_-10px_rgba(7,92,69,0.7)] transition hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand active:scale-[0.99]"
             >
-              <ScanLine className="size-[21px]" />
+              <ScanLine className="size-6" />
               {t('scanCta', lang)}
             </Link>
-            <p className="flex items-center justify-center gap-1.5 text-xs text-muted md:text-sm lg:justify-start">
-              <ImageIcon className="size-[15px]" />
+            <p className="flex items-center justify-center gap-1.5 text-sm text-muted md:text-[15px] lg:justify-start">
+              <ImageIcon className="size-4" />
               {t('homeScanHint', lang)}
             </p>
           </div>
@@ -211,18 +143,20 @@ export default function Page() {
         {/* ── How it works + reminder ──
             Phone/tablet: stacked. Laptop: steps on the left, reminder card on the right. */}
         <div className="flex flex-col gap-6 md:gap-8 lg:grid lg:grid-cols-[1fr_380px] lg:items-start lg:gap-16">
-          <section className="flex flex-col gap-4 md:gap-6" aria-labelledby="how-it-works">
+          <section className="card flex flex-col gap-5 p-5 md:gap-6 md:p-8" aria-labelledby="how-it-works">
             <h2 id="how-it-works" className="text-xl font-bold text-ink md:text-2xl">
               {t('homeStepsTitle', lang)}
             </h2>
             <HowItWorksStrip />
           </section>
 
-          <section className="flex items-start gap-[11px] rounded-[14px] bg-subtle p-4 md:gap-3.5 md:p-6">
-            <ShieldCheck className="mt-px size-[21px] shrink-0 text-primary md:size-6" />
-            <div className="flex min-w-0 flex-1 flex-col gap-[5px] md:gap-2">
-              <h2 className="text-sm font-semibold text-ink md:text-base">{t('homeGuidanceTitle', lang)}</h2>
-              <p className="text-[13px] leading-normal text-muted md:text-sm md:leading-relaxed">
+          <section className="card flex items-start gap-3.5 p-5 md:p-8">
+            <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-success-tint text-brand">
+              <ShieldCheck className="size-6" />
+            </span>
+            <div className="flex min-w-0 flex-1 flex-col gap-1.5 md:gap-2">
+              <h2 className="text-base font-semibold text-ink md:text-lg">{t('homeGuidanceTitle', lang)}</h2>
+              <p className="text-[15px] leading-relaxed text-muted md:text-base">
                 {t('homeGuidanceBody', lang)}
               </p>
             </div>
@@ -230,13 +164,6 @@ export default function Page() {
         </div>
       </div>
 
-      {/* Footer note: outer = full-width border, inner = centred column */}
-      <footer className="mt-auto border-t border-border">
-        <div className={`${CONTAINER} flex items-start gap-[7px] py-5`}>
-          <InfoIcon className="mt-px size-[15px] shrink-0 text-muted" />
-          <p className="flex-1 text-[11px] leading-normal text-muted md:text-xs">{t('footerDisclosure', lang)}</p>
-        </div>
-      </footer>
-    </div>
+    </PageShell>
   );
 }

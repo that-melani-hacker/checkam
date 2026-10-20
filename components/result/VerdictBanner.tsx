@@ -46,25 +46,25 @@ export function VerdictBanner({ verdict, checks, explanation }: Props) {
   const Icon = inactiveOnly ? ShieldX : icon[verdict];
 
   return (
-    <section className={`flex flex-col gap-3 rounded-[20px] p-5 ${tint[verdict]}`}>
-      <p className={`flex items-center gap-2 text-[11px] font-bold ${label[verdict]}`}>
+    <section className={`flex flex-col gap-3 rounded-3xl p-6 md:p-8 ${tint[verdict]}`}>
+      <p className={`flex items-center gap-2 text-[13px] font-bold tracking-wide ${label[verdict]}`}>
         <Icon size={24} aria-hidden />
         {copy.status[lang]}
       </p>
-      <h1 className={`text-[27px] leading-[1.15] font-bold ${title[verdict]}`}>{copy.title[lang]}</h1>
+      <h1 className={`text-[30px] leading-[1.12] font-bold tracking-tight md:text-4xl ${title[verdict]}`}>{copy.title[lang]}</h1>
       {verdict === 'mismatch' && failed.length > 0 ? (
         <>
-          <p className="text-sm leading-[1.55] text-ink">{mismatchCount(failed.length, lang)}</p>
+          <p className="text-base leading-relaxed text-ink md:text-[17px]">{mismatchCount(failed.length, lang)}</p>
           <ul>
             {failed.map((c) => (
-              <li key={c.field} className="text-sm leading-[1.55] font-semibold text-ink">
+              <li key={c.field} className="text-base leading-relaxed font-semibold text-ink md:text-[17px]">
                 • {mismatchIssue(c.field, c.pack ?? '—', c.registry ?? '—', lang)}
               </li>
             ))}
           </ul>
         </>
       ) : (
-        <p className="text-sm leading-[1.55] text-ink">{explanation[lang]}</p>
+        <p className="text-base leading-relaxed text-ink md:text-[17px]">{explanation[lang]}</p>
       )}
     </section>
   );

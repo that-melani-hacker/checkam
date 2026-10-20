@@ -45,7 +45,7 @@ export function MedicineInfo({ name, strength, packName }: Props) {
 
   if (info === 'loading') {
     return (
-      <p className="flex items-center gap-2 rounded-[14px] border border-border p-4 text-[13px] text-muted" aria-live="polite">
+      <p className="card flex items-center gap-3 p-5 text-[15px] text-muted" aria-live="polite">
         <LoaderCircle size={18} className="shrink-0 animate-spin text-brand" aria-hidden />
         {resultUi.aboutLoading[lang]}
       </p>
@@ -54,16 +54,18 @@ export function MedicineInfo({ name, strength, packName }: Props) {
 
   const text = info[lang];
   return (
-    <section className="flex flex-col gap-4 rounded-[14px] border border-border p-4" aria-live="polite">
-      <h2 className="flex items-center gap-2 text-base font-bold text-ink">
-        <BookOpen size={20} className="shrink-0 text-brand" aria-hidden />
+    <section className="card flex flex-col gap-5 p-5 md:p-7" aria-live="polite">
+      <h2 className="flex items-center gap-3 text-lg font-bold text-ink md:text-xl">
+        <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-success-tint text-brand">
+          <BookOpen size={22} aria-hidden />
+        </span>
         {resultUi.aboutTitle[lang]}
       </h2>
-      <p className="text-sm leading-normal text-ink">{text.summary}</p>
+      <p className="text-base leading-relaxed text-ink md:text-[17px]">{text.summary}</p>
 
       <div className="flex flex-col gap-1.5">
-        <h3 className="text-xs font-bold text-muted">{resultUi.aboutUses[lang]}</h3>
-        <ul className="flex list-disc flex-col gap-1 pl-5 text-sm leading-normal text-ink">
+        <h3 className="text-[13px] font-bold tracking-wide text-muted uppercase">{resultUi.aboutUses[lang]}</h3>
+        <ul className="flex list-disc flex-col gap-1.5 pl-5 text-base leading-relaxed text-ink marker:text-brand">
           {text.uses.map((u) => (
             <li key={u}>{u}</li>
           ))}
@@ -72,8 +74,8 @@ export function MedicineInfo({ name, strength, packName }: Props) {
 
       {text.tips.length > 0 && (
         <div className="flex flex-col gap-1.5">
-          <h3 className="text-xs font-bold text-muted">{resultUi.aboutTips[lang]}</h3>
-          <ul className="flex list-disc flex-col gap-1 pl-5 text-sm leading-normal text-ink">
+          <h3 className="text-[13px] font-bold tracking-wide text-muted uppercase">{resultUi.aboutTips[lang]}</h3>
+          <ul className="flex list-disc flex-col gap-1.5 pl-5 text-base leading-relaxed text-ink marker:text-brand">
             {text.tips.map((tip) => (
               <li key={tip}>{tip}</li>
             ))}
@@ -81,7 +83,7 @@ export function MedicineInfo({ name, strength, packName }: Props) {
         </div>
       )}
 
-      <p className="border-t border-border pt-3 text-[11px] leading-normal text-muted">{resultUi.aboutDisclaimer[lang]}</p>
+      <p className="border-t border-border pt-4 text-[13px] leading-relaxed text-muted">{resultUi.aboutDisclaimer[lang]}</p>
     </section>
   );
 }

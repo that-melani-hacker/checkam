@@ -12,8 +12,8 @@ export function OfflineBanner() {
   if (online) return null;
 
   return (
-    <p role="status" className="flex items-center gap-2 rounded-lg bg-neutral-tint px-3.5 py-3 text-[13px] font-semibold text-neutral">
-      <WifiOff size={18} className="shrink-0" aria-hidden />
+    <p role="status" className="flex items-center gap-3 rounded-2xl bg-neutral-tint px-4 py-3.5 text-[15px] font-semibold text-neutral">
+      <WifiOff size={20} className="shrink-0" aria-hidden />
       {errorUi.offlineBanner[lang]}
     </p>
   );

@@ -37,13 +37,13 @@ export function ErrorScreen({ code, onRetry, onChoosePhoto }: Props) {
 
   return (
     <div className="flex flex-col gap-5">
-      <section role="alert" className="flex flex-col gap-3 rounded-[20px] bg-neutral-tint p-5">
-        <p className="flex items-center gap-2 text-[11px] font-bold text-neutral">
+      <section role="alert" className="flex flex-col gap-3 rounded-3xl bg-neutral-tint p-6 md:p-8">
+        <p className="flex items-center gap-2 text-[13px] font-bold tracking-wide text-neutral">
           <Icon size={24} aria-hidden />
           {errorUi.eyebrow[lang]}
         </p>
-        <h1 className="text-[27px] leading-[1.15] font-bold text-ink">{copy.title[lang]}</h1>
-        <p className="text-sm leading-[1.55] text-ink">{copy.body[lang]}</p>
+        <h1 className="text-[28px] leading-[1.15] font-bold tracking-tight text-ink md:text-4xl">{copy.title[lang]}</h1>
+        <p className="text-base leading-relaxed text-ink md:text-[17px]">{copy.body[lang]}</p>
       </section>
 
       <div className="flex flex-col gap-2.5">

@@ -67,15 +67,17 @@ export function HowItWorksStrip() {
   const { lang } = useVerify(); // 'en' | 'pcm'
 
   return (
-    // 3 equal columns. min-w-0 lets long Pidgin words wrap instead of stretching a column.
-    <ol className="flex items-start gap-3">
+    // Phones: a list (icon beside text). Wider screens: 3 equal columns. min-w-0 lets long Pidgin words wrap.
+    <ol className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-5">
       {STEPS.map(({ icon, title, text }) => (
-        <li key={title} className="flex min-w-0 flex-1 flex-col gap-2">
-          <span className="flex size-10 items-center justify-center rounded-xl bg-success-tint text-primary">
+        <li key={title} className="flex min-w-0 items-start gap-3.5 sm:flex-col sm:gap-3">
+          <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-success-tint text-brand">
             {icon}
           </span>
-          <p className="text-[13px] font-bold text-ink">{t(title, lang)}</p>
-          <p className="text-xs leading-normal text-muted">{t(text, lang)}</p>
+          <div className="flex min-w-0 flex-col gap-1">
+            <p className="text-base font-bold text-ink">{t(title, lang)}</p>
+            <p className="text-[15px] leading-relaxed text-muted">{t(text, lang)}</p>
+          </div>
         </li>
       ))}
     </ol>

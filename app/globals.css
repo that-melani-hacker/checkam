@@ -6,10 +6,13 @@
  * user picks light or dark with the header toggle (components/ui/ThemeToggle.tsx).
  * primary = filled buttons and the brand mark. brand = green text and icons on the page
  * (the same green in light mode; a lighter green in dark mode so it stays readable).
- * surface = the page background (white in light mode).
+ * canvas = the page background (softly tinted); surface = cards and the header on top of it.
+ * Cards use the `card` utility: surface colour, large rounded corners and a soft shadow.
  */
 :root {
+  --canvas: #f3f6f4;
   --surface: #ffffff;
+  --shadow-card: 0 1px 2px rgba(16, 40, 30, 0.05), 0 10px 30px -12px rgba(16, 40, 30, 0.14);
   --primary: #075c45;
   --brand: #075c45;
   --primary-strong: #063d31;
@@ -29,7 +32,9 @@
 /* Dark: follows the phone unless the user picked light with the toggle... */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --surface: #111a17;
+    --canvas: #0b1210;
+    --surface: #131d19;
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 10px 30px -12px rgba(0, 0, 0, 0.6);
     --primary: #187a58;
     --brand: #7dd8ae;
     --primary-strong: #a8e6c8;
@@ -49,7 +54,9 @@
 
 /* ...or the user picked dark with the toggle (data-theme is set by ThemeToggle). */
 :root[data-theme="dark"] {
-  --surface: #111a17;
+  --canvas: #0b1210;
+  --surface: #131d19;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 10px 30px -12px rgba(0, 0, 0, 0.6);
   --primary: #187a58;
   --brand: #7dd8ae;
   --primary-strong: #a8e6c8;
@@ -67,6 +74,7 @@
 }
 
 @theme inline {
+  --color-canvas: var(--canvas);
   --color-surface: var(--surface);
   --color-primary: var(--primary);
   --color-brand: var(--brand);
@@ -85,6 +93,14 @@
 }
 
 body {
-  background: var(--surface);
+  background: var(--canvas);
   color: var(--ink);
+}
+
+/* A raised card: white (or dark) surface, large rounded corners, soft shadow. */
+@utility card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1.5rem;
+  box-shadow: var(--shadow-card);
 }

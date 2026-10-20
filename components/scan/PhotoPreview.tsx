@@ -20,33 +20,33 @@ export function PhotoPreview({ photos, onRemove }: Props) {
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="relative flex aspect-[342/278] w-full items-center justify-center overflow-hidden rounded-[20px] bg-success-tint p-5">
+      <div className="relative flex aspect-[342/278] w-full items-center justify-center overflow-hidden rounded-3xl bg-success-tint p-5 md:p-6">
         {latest ? (
           // eslint-disable-next-line @next/next/no-img-element -- blob: URL, next/image can't optimise it
           <img
             src={latest.url}
             alt=""
-            className="size-full rounded-[14px] border border-primary object-contain"
+            className="size-full rounded-2xl border border-primary object-contain"
           />
         ) : (
-          <div className="flex size-full flex-col items-center justify-center gap-2 rounded-[14px] border border-dashed border-primary/40 text-primary">
-            <Camera size={28} aria-hidden />
-            <p className="text-sm font-semibold">{scanUi.emptyPreview[lang]}</p>
+          <div className="flex size-full flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-brand/40 text-brand">
+            <Camera size={34} aria-hidden />
+            <p className="text-base font-semibold">{scanUi.emptyPreview[lang]}</p>
           </div>
         )}
       </div>
 
       {photos.length > 1 && (
-        <ul className="flex gap-2.5">
+        <ul className="flex flex-wrap gap-3">
           {photos.map((p, i) => (
-            <li key={p.url} className="relative size-16 shrink-0">
+            <li key={p.url} className="relative size-18 shrink-0">
               {/* eslint-disable-next-line @next/next/no-img-element -- blob: URL */}
-              <img src={p.url} alt="" className="size-full rounded-[10px] border border-border object-cover" />
+              <img src={p.url} alt="" className="size-full rounded-2xl border border-border object-cover shadow-sm" />
               <button
                 type="button"
                 onClick={() => onRemove(i)}
                 aria-label={`${scanUi.removePhoto[lang]} ${i + 1}`}
-                className="absolute -top-2 -right-2 flex size-7 items-center justify-center rounded-full border border-border bg-surface text-ink shadow-sm"
+                className="absolute -top-2.5 -right-2.5 flex size-8 items-center justify-center rounded-full border border-border bg-surface text-ink shadow-md"
               >
                 <X size={14} aria-hidden />
               </button>
@@ -56,7 +56,7 @@ export function PhotoPreview({ photos, onRemove }: Props) {
       )}
 
       {latest && (
-        <div className="flex items-center justify-between gap-3 text-xs text-muted">
+        <div className="flex items-center justify-between gap-3 text-sm text-muted">
           <p className="flex min-w-0 items-center gap-1.5">
             <ImageIcon size={15} className="shrink-0 text-ink" aria-hidden />
             <span className="truncate">{photos.length === 1 ? latest.file.name : formatSize(totalBytes)}</span>
@@ -69,7 +69,7 @@ export function PhotoPreview({ photos, onRemove }: Props) {
                 type="button"
                 onClick={() => onRemove(0)}
                 aria-label={scanUi.removePhoto[lang]}
-                className="flex size-7 items-center justify-center rounded-full text-muted"
+                className="flex size-9 items-center justify-center rounded-full text-muted hover:bg-subtle"
               >
                 <X size={14} aria-hidden />
               </button>

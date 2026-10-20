@@ -11,11 +11,13 @@ type Props = { verdict: Verdict };
 export function PharmacistNote({ verdict }: Props) {
   const { lang } = useVerify();
   return (
-    <aside className="flex items-start gap-[11px] rounded-[14px] bg-subtle p-4">
-      <MessageCircle size={21} className="shrink-0 text-brand" aria-hidden />
-      <div className="flex min-w-0 flex-1 flex-col gap-[5px]">
-        <p className="text-sm font-semibold text-ink">{resultUi.pharmacistTitle[lang]}</p>
-        <p className="text-[13px] leading-normal text-muted">{verdictUi[verdict].pharmacist[lang]}</p>
+    <aside className="card flex items-start gap-3.5 p-5 md:p-6">
+      <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-success-tint text-brand">
+        <MessageCircle size={22} aria-hidden />
+      </span>
+      <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+        <p className="text-base font-semibold text-ink md:text-lg">{resultUi.pharmacistTitle[lang]}</p>
+        <p className="text-[15px] leading-relaxed text-muted md:text-base">{verdictUi[verdict].pharmacist[lang]}</p>
       </div>
     </aside>
   );

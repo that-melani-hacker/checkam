@@ -8,8 +8,8 @@ import { useVerify } from '@/lib/state/VerifyContext';
 import { scanUi } from '@/lib/i18n/scan';
 import { ClientError, getTestTag, resizeImage, verifyPhoto } from '@/lib/api/client';
 import { MAX_PHOTOS, type ClientErrorCode } from '@/lib/types';
-import { AppHeader } from '@/components/ui/AppHeader';
-import { AppFooter } from '@/components/ui/AppFooter';
+import { PageShell } from '@/components/ui/PageShell';
+import { NARROW } from '@/lib/ui/layout';
 import { PhotoPreview, type PickedPhoto } from '@/components/scan/PhotoPreview';
 import { PhotoTips } from '@/components/scan/PhotoTips';
 import { CameraUpload } from '@/components/scan/CameraUpload';
@@ -103,54 +103,55 @@ export default function ScanPage() {
   }
 
   return (
-    <div lang={lang === 'pcm' ? 'pcm' : 'en'} className="flex min-h-dvh flex-col">
-      <AppHeader />
-
+    <PageShell>
       {phase === 'checking' && <LoadingView step={step} />}
 
       {phase === 'error' && (
-        <div className="py-6">
+        <div className={NARROW}>
           {/* The photos are kept: Try again sends them again, or go back to change them */}
           <ErrorScreen code={errorCode} onRetry={handleCheck} onChoosePhoto={() => setPhase('choose')} />
         </div>
       )}
 
       {phase === 'choose' && (
-        <div className="flex flex-col gap-6 py-6">
-          <Link href="/" className="flex min-h-11 items-center gap-2 self-start text-sm font-semibold text-primary">
-            <ArrowLeft size={18} aria-hidden />
+        <div className="flex flex-col gap-6 md:gap-8">
+          <Link href="/" className="flex min-h-12 items-center gap-2 self-start text-[15px] font-semibold text-brand">
+            <ArrowLeft size={20} aria-hidden />
             {scanUi.back[lang]}
           </Link>
 
           <OfflineBanner />
 
-          <section className="flex flex-col gap-3">
-            <p className="text-[11px] font-bold text-primary">{scanUi.eyebrow[lang]}</p>
-            <h1 className="text-[29px] font-bold leading-[1.2] text-ink">{scanUi.title[lang]}</h1>
-            <p className="text-base leading-normal text-muted">{scanUi.intro[lang]}</p>
+          <section className="flex flex-col gap-3 md:max-w-2xl">
+            <p className="text-[13px] font-bold tracking-wide text-brand">{scanUi.eyebrow[lang]}</p>
+            <h1 className="text-[32px] font-bold leading-[1.15] tracking-tight text-ink md:text-5xl">{scanUi.title[lang]}</h1>
+            <p className="text-[17px] leading-relaxed text-muted md:text-lg">{scanUi.intro[lang]}</p>
           </section>
 
-          <PhotoPreview photos={photos} onRemove={handleRemove} />
-          {fileError && (
-            <p role="alert" className="text-sm font-semibold text-danger">
-              {scanUi.notAnImage[lang]}
-            </p>
-          )}
+          {/* Phones: one column. Laptops: the photo on the left, tips and buttons on the right. */}
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-start lg:gap-10">
+            <div className="flex flex-col gap-3">
+              <PhotoPreview photos={photos} onRemove={handleRemove} />
+              {fileError && (
+                <p role="alert" className="text-[15px] font-semibold text-danger">
+                  {scanUi.notAnImage[lang]}
+                </p>
+              )}
+            </div>
 
-          <PhotoTips />
-
-          <CameraUpload
-            onPhoto={handlePhoto}
-            photoCount={photos.length}
-            full={photos.length >= MAX_PHOTOS}
-            onCheck={handleCheck}
-          />
-
-          <p className="text-center text-xs leading-normal text-muted">{scanUi.privacy[lang]}</p>
+            <div className="flex flex-col gap-6">
+              <PhotoTips />
+              <CameraUpload
+                onPhoto={handlePhoto}
+                photoCount={photos.length}
+                full={photos.length >= MAX_PHOTOS}
+                onCheck={handleCheck}
+              />
+              <p className="text-center text-sm leading-relaxed text-muted">{scanUi.privacy[lang]}</p>
+            </div>
+          </div>
         </div>
       )}
-
-      <AppFooter />
-    </div>
+    </PageShell>
   );
 }

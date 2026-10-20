@@ -19,11 +19,11 @@ const base =
 
 const variants: Record<Variant, string> = {
   // Filled green, 56px tall, like "Check this photo" and "Scan a drug"
-  primary: 'h-14 rounded-[14px] border border-primary bg-primary px-4 text-base text-white hover:bg-primary-strong',
+  primary: 'min-h-14 rounded-2xl border border-primary bg-primary px-5 py-3 text-[17px] text-white shadow-sm hover:brightness-110 active:scale-[0.99]',
   // Outlined, like "Retake photo" and "Check another drug"
-  secondary: 'h-14 rounded-[14px] border border-border bg-white px-4 text-base text-primary hover:bg-subtle',
+  secondary: 'min-h-14 rounded-2xl border border-border bg-surface px-5 py-3 text-[17px] text-brand hover:bg-subtle active:scale-[0.99]',
   // Text only, like "Upload a different photo". min-h-11 keeps a 44px tap target
-  link: 'min-h-11 px-2 text-sm text-primary hover:underline',
+  link: 'min-h-12 px-2 text-[15px] text-brand hover:underline',
 };
 
 /** Owner: Vivian. Primary is filled green, secondary is outlined, link is text only. */

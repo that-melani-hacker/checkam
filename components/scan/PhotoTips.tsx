@@ -16,11 +16,13 @@ export function PhotoTips() {
 
   return (
     <Card>
-      <h2 className="text-sm font-semibold text-ink">{scanUi.tipsTitle[lang]}</h2>
-      <ul className="mt-3 flex flex-col gap-2.5">
+      <h2 className="text-base font-semibold text-ink md:text-lg">{scanUi.tipsTitle[lang]}</h2>
+      <ul className="mt-4 flex flex-col gap-3">
         {tips.map(({ icon: Icon, text }) => (
-          <li key={text} className="flex items-start gap-3 text-[13px] leading-normal text-muted">
-            <Icon size={18} className="mt-px shrink-0 text-ink" aria-hidden />
+          <li key={text} className="flex items-center gap-3 text-[15px] leading-snug text-muted">
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-success-tint text-brand">
+              <Icon size={18} aria-hidden />
+            </span>
             {text}
           </li>
         ))}

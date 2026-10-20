@@ -38,20 +38,20 @@ export function ComparisonTable({ checks, verdict }: Props) {
 
   return (
     <section className="flex flex-col gap-3">
-      <h2 className="text-xl font-bold text-ink">{resultUi.heading[lang]}</h2>
-      <p className="text-xs text-muted">
+      <h2 className="text-2xl font-bold tracking-tight text-ink">{resultUi.heading[lang]}</h2>
+      <p className="text-sm text-muted">
         {resultUi.checked[lang]} {formatCheckDate(new Date())}
       </p>
-      {verdict === 'not_found' && <p className="text-xs leading-normal text-neutral">{resultUi.notFoundNote[lang]}</p>}
-      {verdict === 'unreadable' && <p className="text-xs leading-normal text-neutral">{resultUi.unreadableNote[lang]}</p>}
+      {verdict === 'not_found' && <p className="text-sm leading-relaxed text-neutral">{resultUi.notFoundNote[lang]}</p>}
+      {verdict === 'unreadable' && <p className="text-sm leading-relaxed text-neutral">{resultUi.unreadableNote[lang]}</p>}
 
-      <table className="w-full table-fixed border-separate border-spacing-0 overflow-hidden rounded-[14px] border border-border">
+      <table className="card w-full table-fixed border-separate border-spacing-0 overflow-hidden">
         <thead>
-          <tr className="bg-subtle text-left text-[13px] font-bold text-ink">
-            <th scope="col" className="p-3.5 pr-2">
+          <tr className="bg-subtle text-left text-sm font-bold text-ink md:text-[15px]">
+            <th scope="col" className="p-4 pr-2 md:px-6">
               {resultUi.colPack[lang]}
             </th>
-            <th scope="col" className="p-3.5 pl-2">
+            <th scope="col" className="p-4 pl-2 md:pr-6">
               {resultUi.colRecord[lang]}
             </th>
           </tr>
@@ -61,32 +61,32 @@ export function ComparisonTable({ checks, verdict }: Props) {
           return (
             <tbody key={c.field} className={c.ok === false ? 'bg-danger-tint' : 'bg-surface'}>
               <tr>
-                <th colSpan={2} scope="colgroup" className="border-t border-border px-3.5 pt-3.5 pb-2.5 text-left">
+                <th colSpan={2} scope="colgroup" className="border-t border-border px-4 pt-4 pb-2 text-left md:px-6">
                   <span className="flex items-center justify-between gap-2">
-                    <span className="text-xs font-bold text-muted">{fieldLabel[c.field][lang]}</span>
-                    <span className={`flex shrink-0 items-center gap-1 text-[11px] font-semibold ${statusColor[`${c.ok}`]}`}>
+                    <span className="text-[13px] font-bold tracking-wide text-muted uppercase">{fieldLabel[c.field][lang]}</span>
+                    <span className={`flex shrink-0 items-center gap-1 text-[13px] font-semibold ${statusColor[`${c.ok}`]}`}>
                       <StatusIcon size={14} strokeWidth={2.5} aria-hidden />
                       {statusLabel(c, verdict, lang)}
                     </span>
                   </span>
                 </th>
               </tr>
-              <tr className="align-top text-sm leading-[1.45] text-ink">
-                <td className="px-3.5 pr-2 pb-3.5 break-words">
+              <tr className="align-top text-base leading-snug text-ink md:text-[17px]">
+                <td className="px-4 pr-2 pb-4 break-words md:pl-6">
                   {packLines(c, lang).map((line) => (
                     <span key={line} className="block">
                       {line}
                     </span>
                   ))}
                 </td>
-                <td className="px-3.5 pb-3.5 pl-2 break-words">{recordValue(c, verdict, lang)}</td>
+                <td className="px-4 pb-4 pl-2 break-words md:pr-6">{recordValue(c, verdict, lang)}</td>
               </tr>
             </tbody>
           );
         })}
       </table>
 
-      <p className="text-[11px] leading-normal text-muted">
+      <p className="text-[13px] leading-relaxed text-muted">
         {(expiry?.pack ? resultUi.expiryNote : resultUi.expiryNoteUnread)[lang]}
       </p>
     </section>

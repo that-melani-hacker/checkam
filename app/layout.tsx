@@ -25,8 +25,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="font-sans antialiased">
         <VerifyProvider>
-          {/* One centered phone-width column on every screen size */}
-          <main className="mx-auto min-h-dvh w-full max-w-md px-6 md:max-w-lg">{children}</main>
+          {/* Each screen sets its own widths through PageShell (components/ui/PageShell.tsx) */}
+          <main className="min-h-dvh">{children}</main>
         </VerifyProvider>
       </body>
     </html>

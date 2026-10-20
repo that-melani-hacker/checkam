@@ -6,7 +6,7 @@ import { ArrowLeft, Camera, ScanLine } from 'lucide-react';
 import { useVerify } from '@/lib/state/VerifyContext';
 import { t } from '@/lib/i18n/strings';
 import { resultUi } from '@/lib/i18n/result';
-import { ScreenFrame } from '@/components/result/ScreenFrame';
+import { PageShell } from '@/components/ui/PageShell';
 import { primaryButton } from '@/components/result/buttonStyles';
 import { VerdictBanner } from '@/components/result/VerdictBanner';
 import { ComparisonTable } from '@/components/result/ComparisonTable';
@@ -24,29 +24,48 @@ export default function ResultPage() {
     reset();
   }
 
-  return (
-    <ScreenFrame>
-      {!result ? (
-        <div className="flex flex-col gap-5 py-6">
-          <p className="text-muted">{resultUi.noResult[lang]}</p>
+  if (!result) {
+    return (
+      <PageShell>
+        <div className="mx-auto flex max-w-xl flex-col gap-5">
+          <p className="text-[17px] text-muted">{resultUi.noResult[lang]}</p>
           <Link href="/scan" className={primaryButton}>
-            <ScanLine size={21} aria-hidden />
+            <ScanLine size={22} aria-hidden />
             {t('scanCta', lang)}
           </Link>
         </div>
-      ) : (
-        <div className="flex flex-col gap-5 py-6">
-          <Link href="/" className="flex min-h-11 items-center gap-2 text-sm font-semibold text-brand">
-            <ArrowLeft size={18} aria-hidden />
+      </PageShell>
+    );
+  }
+
+  // The pharmacist note and the buttons sit under the verdict on laptops, and at the end on phones.
+  const advice = (
+    <>
+      <PharmacistNote verdict={result.verdict} />
+      <ResultActions verdict={result.verdict} />
+    </>
+  );
+
+  return (
+    <PageShell>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-start lg:gap-10">
+        {/* Left on laptops: stays in view while the table scrolls */}
+        <div className="flex flex-col gap-6 lg:sticky lg:top-28">
+          <Link href="/" className="flex min-h-12 items-center gap-2 self-start text-[15px] font-semibold text-brand">
+            <ArrowLeft size={20} aria-hidden />
             {resultUi.back[lang]}
           </Link>
           <VerdictBanner verdict={result.verdict} checks={result.checks} explanation={result.explanation} />
           {result.verdict === 'unreadable' && (
             <button type="button" onClick={retake} className={primaryButton}>
-              <Camera size={21} aria-hidden />
+              <Camera size={22} aria-hidden />
               {resultUi.retake[lang]}
             </button>
           )}
+          <div className="hidden flex-col gap-6 lg:flex">{advice}</div>
+        </div>
+
+        <div className="flex flex-col gap-6">
           <ComparisonTable checks={result.checks} verdict={result.verdict} />
           {/* Only for a clean result: explaining a suspicious pack's medicine could nudge people to take it */}
           {result.verdict === 'no_red_flags' && result.registry && (
@@ -56,10 +75,9 @@ export default function ResultPage() {
               packName={result.extracted.name}
             />
           )}
-          <PharmacistNote verdict={result.verdict} />
-          <ResultActions verdict={result.verdict} />
+          <div className="flex flex-col gap-6 lg:hidden">{advice}</div>
         </div>
-      )}
-    </ScreenFrame>
+      </div>
+    </PageShell>
   );
 }

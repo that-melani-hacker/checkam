@@ -50,10 +50,10 @@ export function CameraUpload({ onPhoto, photoCount, full, onCheck }: Props) {
             {checkPhotosLabel(photoCount, lang)}
           </Button>
           {full ? (
-            <p className="text-center text-xs text-muted">{scanUi.maxPhotos[lang]}</p>
+            <p className="text-center text-sm text-muted">{scanUi.maxPhotos[lang]}</p>
           ) : (
             <>
-              <p className="text-center text-xs leading-normal text-muted">{scanUi.sidesHint[lang]}</p>
+              <p className="text-center text-sm leading-relaxed text-muted">{scanUi.sidesHint[lang]}</p>
               <Button variant="secondary" onClick={openCamera} icon={<Plus size={21} aria-hidden />}>
                 {scanUi.addSide[lang]}
               </Button>

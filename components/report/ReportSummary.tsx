@@ -12,8 +12,8 @@ const compared: Field[] = ['name', 'strength', 'manufacturer'];
 function Detail({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex flex-col gap-[5px]">
-      <p className="text-xs text-muted">{label}</p>
-      <p className="text-sm leading-[1.4] break-words text-ink">{value}</p>
+      <p className="text-sm font-semibold text-muted">{label}</p>
+      <p className="text-base leading-snug break-words text-ink md:text-[17px]">{value}</p>
     </div>
   );
 }
@@ -45,21 +45,21 @@ export function ReportSummary({ result, photoUrl }: Props) {
         : explanation[lang];
 
   return (
-    <section className="overflow-hidden rounded-[14px] border border-border">
-      <h2 className="bg-subtle p-4 text-base font-bold text-ink">{reportUi.summary[lang]}</h2>
-      <div className="flex flex-col gap-4 p-4">
+    <section className="card overflow-hidden">
+      <h2 className="bg-subtle px-5 py-4 text-lg font-bold text-ink md:px-7">{reportUi.summary[lang]}</h2>
+      <div className="flex flex-col gap-5 p-5 md:p-7">
         <div className="flex items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element -- local blob URL from the user's camera */}
-          <img src={photoUrl} alt="" className="size-14 shrink-0 rounded-[10px] bg-success-tint object-cover" />
-          <p className="text-xs text-muted">{reportUi.photo[lang]}</p>
+          <img src={photoUrl} alt="" className="size-18 shrink-0 rounded-2xl bg-brand-tint object-cover shadow-sm" />
+          <p className="text-sm text-muted">{reportUi.photo[lang]}</p>
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <p className={`flex items-center gap-1.5 text-xs ${concernColor}`}>
+          <p className={`flex items-center gap-1.5 text-sm font-semibold ${concernColor}`}>
             <ConcernIcon size={17} aria-hidden />
             {concernLabel(failed, verdict, lang)}
           </p>
-          <p className="text-lg leading-[1.3] font-bold text-ink">
+          <p className="text-xl leading-snug font-bold text-ink md:text-2xl">
             {e.name ?? reportUi.unknownMedicine[lang]}
             {e.strength && (
               <>
@@ -85,7 +85,7 @@ export function ReportSummary({ result, photoUrl }: Props) {
         <Detail label={reportUi.expiryOnPack[lang]} value={expiryValue} />
         <Detail label={reportUi.checkedOn[lang]} value={dateLong} />
 
-        <p className="text-xs leading-normal text-muted">{closing}</p>
+        <p className="text-sm leading-relaxed text-muted">{closing}</p>
       </div>
     </section>
   );

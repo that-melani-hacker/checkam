@@ -22,6 +22,33 @@ export const scanUi = {
   tipLight: { en: 'Use good light. Avoid glare and flash.', pcm: 'Use better light. No use flash make e no shine.' },
   tipFull: { en: 'Show the full pack, not loose tablets.', pcm: 'Show the full pack, no be loose tablet.' },
   tipSteady: { en: 'Hold steady so small text stays sharp.', pcm: 'Hold your hand steady make the small writing clear.' },
+  // "What to show in your photo" checklist (not in Figma). Written after user testing: say exactly what to look for.
+  lookTitle: { en: 'What to show in your photo', pcm: 'Wetin your photo suppose show' },
+  lookIntro: {
+    en: 'Make sure we can clearly read these 5 things:',
+    pcm: 'Make sure say we fit read these 5 things well:',
+  },
+  lookName: { en: 'Drug name', pcm: 'Drug name' },
+  lookNameHint: { en: 'The big name on the front, like “Emzor Paracetamol”', pcm: 'The big name for front, like “Emzor Paracetamol”' },
+  lookStrength: { en: 'Strength', pcm: 'How strong e be' },
+  lookStrengthHint: { en: 'The amount, like “500 mg”', pcm: 'The amount, like “500 mg”' },
+  lookNafdac: { en: 'NAFDAC number', pcm: 'NAFDAC number' },
+  lookNafdacHint: {
+    en: 'Next to “NAFDAC Reg. No.”, like “A4‑1234” or “04‑0411”',
+    pcm: 'E dey near “NAFDAC Reg. No.”, like “A4‑1234” or “04‑0411”',
+  },
+  lookMaker: { en: 'Manufacturer', pcm: 'Company wey make am' },
+  lookMakerHint: { en: 'After “Manufactured by”', pcm: 'After “Manufactured by”' },
+  lookExpiry: { en: 'Expiry date', pcm: 'Expiry date' },
+  lookExpiryHint: { en: 'After “EXP”, like “EXP 06/2028”', pcm: 'After “EXP”, like “EXP 06/2028”' },
+  lookSides: {
+    en: 'Can’t see all 5 on one side? Take a photo of each side. You can add up to 4 photos.',
+    pcm: 'You no see all 5 for one side? Snap each side. You fit add reach 4 photos.',
+  },
+  lookPhotoTip: {
+    en: 'Use good light, avoid flash, and hold the phone steady.',
+    pcm: 'Use better light, no use flash, and hold the phone steady.',
+  },
   checkPhoto: { en: 'Check this photo', pcm: 'Check this photo' },
   retake: { en: 'Retake photo', pcm: 'Snap am again' },
   uploadDifferent: { en: 'Upload a different photo', pcm: 'Upload another photo' },

@@ -1,76 +1,94 @@
 @import "tailwindcss";
 
 /*
- * CheckAm brand tokens from Figma. Use as bg-primary, text-danger, border-border, etc.
- * Dark values come from the "· Dark" frames. They follow the phone's setting until the
- * user picks light or dark with the header toggle (components/ui/ThemeToggle.tsx).
- * primary = filled buttons and the brand mark. brand = green text and icons on the page
- * (the same green in light mode; a lighter green in dark mode so it stays readable).
- * surface = the page background (white in light mode).
+ * CheckAm look: "calm & trustworthy". Soft blue-grey page, deep indigo, one warm yellow highlight.
+ * Use as bg-primary, text-brand, bg-highlight, border-border, etc.
+ * - canvas = page background; surface = cards and the header on top of it.
+ * - primary = filled buttons and the logo. brand = indigo text and icons (lighter in dark mode).
+ * - brand-tint = quiet indigo wash behind icons and the photo frame.
+ * - highlight = the warm yellow accent, used sparingly (the "CheckAm." marker, step numbers).
+ * - success / danger / neutral are verdict colours only: green = no red flags, red = a warning.
+ * Dark values follow the phone's setting until the user picks light or dark with the header toggle
+ * (components/ui/ThemeToggle.tsx).
  */
 :root {
+  --canvas: #f4f6fa;
   --surface: #ffffff;
-  --primary: #075c45;
-  --brand: #075c45;
-  --primary-strong: #063d31;
-  --ink: #142d26;
-  --muted: #5b6d66;
-  --border: #dae4dd;
-  --subtle: #f5f8f6;
-  --success: #176c46;
-  --success-tint: #eaf4ed;
-  --danger: #ae3337;
-  --danger-tint: #fcf0ef;
-  --neutral: #5b656c;
-  --neutral-tint: #f0f3f4;
+  --shadow-card: 0 1px 2px rgba(20, 28, 70, 0.06);
+  --primary: #1e2a78;
+  --brand: #1e2a78;
+  --brand-tint: #e9ecf8;
+  --primary-strong: #141c55;
+  --highlight: #ffc83d;
+  --ink: #161b33;
+  --muted: #4e566f;
+  --border: #dde2ee;
+  --subtle: #eef1f7;
+  --success: #1c7a4c;
+  --success-tint: #e5f4ec;
+  --danger: #b42318;
+  --danger-tint: #fdeceb;
+  --neutral: #575f78;
+  --neutral-tint: #eceef4;
   color-scheme: light;
 }
 
 /* Dark: follows the phone unless the user picked light with the toggle... */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --surface: #111a17;
-    --primary: #187a58;
-    --brand: #7dd8ae;
-    --primary-strong: #a8e6c8;
-    --ink: #e8f0ec;
-    --muted: #9db0a8;
-    --border: #2a3833;
-    --subtle: #18241f;
-    --success: #5fd39a;
-    --success-tint: #133a2d;
-    --danger: #ff8a85;
-    --danger-tint: #3a1a1b;
-    --neutral: #a9b3ba;
-    --neutral-tint: #1e2427;
+    --canvas: #0c1022;
+    --surface: #141a31;
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.5);
+    --primary: #4655d0;
+    --brand: #aeb8ff;
+    --brand-tint: #1f2650;
+    --primary-strong: #dce0ff;
+    --highlight: #ffc83d;
+    --ink: #eceef8;
+    --muted: #a6acc4;
+    --border: #283052;
+    --subtle: #1a2140;
+    --success: #5bd49a;
+    --success-tint: #12332a;
+    --danger: #ff8a80;
+    --danger-tint: #3b1a1f;
+    --neutral: #b2b8cc;
+    --neutral-tint: #1e2440;
     color-scheme: dark;
   }
 }
 
 /* ...or the user picked dark with the toggle (data-theme is set by ThemeToggle). */
 :root[data-theme="dark"] {
-  --surface: #111a17;
-  --primary: #187a58;
-  --brand: #7dd8ae;
-  --primary-strong: #a8e6c8;
-  --ink: #e8f0ec;
-  --muted: #9db0a8;
-  --border: #2a3833;
-  --subtle: #18241f;
-  --success: #5fd39a;
-  --success-tint: #133a2d;
-  --danger: #ff8a85;
-  --danger-tint: #3a1a1b;
-  --neutral: #a9b3ba;
-  --neutral-tint: #1e2427;
+  --canvas: #0c1022;
+  --surface: #141a31;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --primary: #4655d0;
+  --brand: #aeb8ff;
+  --brand-tint: #1f2650;
+  --primary-strong: #dce0ff;
+  --highlight: #ffc83d;
+  --ink: #eceef8;
+  --muted: #a6acc4;
+  --border: #283052;
+  --subtle: #1a2140;
+  --success: #5bd49a;
+  --success-tint: #12332a;
+  --danger: #ff8a80;
+  --danger-tint: #3b1a1f;
+  --neutral: #b2b8cc;
+  --neutral-tint: #1e2440;
   color-scheme: dark;
 }
 
 @theme inline {
+  --color-canvas: var(--canvas);
   --color-surface: var(--surface);
   --color-primary: var(--primary);
   --color-brand: var(--brand);
+  --color-brand-tint: var(--brand-tint);
   --color-primary-strong: var(--primary-strong);
+  --color-highlight: var(--highlight);
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-border: var(--border);
@@ -81,10 +99,33 @@
   --color-danger-tint: var(--danger-tint);
   --color-neutral: var(--neutral);
   --color-neutral-tint: var(--neutral-tint);
-  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-sans: var(--font-atkinson), system-ui, sans-serif;
+  --font-display: var(--font-lexend), var(--font-atkinson), system-ui, sans-serif;
 }
 
 body {
-  background: var(--surface);
+  background: var(--canvas);
   color: var(--ink);
+}
+
+/* Headings use Lexend, made for easy reading. */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+/* A card: surface colour, rounded corners, a crisp border and only a hint of shadow. */
+@utility card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  box-shadow: var(--shadow-card);
+}
+
+/* A marker-pen underline in the warm yellow, for the one word that matters. */
+@utility marker {
+  background-image: linear-gradient(transparent 62%, color-mix(in srgb, var(--highlight) 75%, transparent) 62%);
+  padding-inline: 0.08em;
 }

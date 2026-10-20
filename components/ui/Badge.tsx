@@ -6,7 +6,7 @@ type Props = { ok: Nullable<boolean>; label: string; className?: string };
 export function Badge({ ok, label, className = '' }: Props) {
   const color = ok === true ? 'text-success' : ok === false ? 'text-danger' : 'text-neutral';
   return (
-    <span className={`inline-flex items-center gap-1 text-xs font-semibold ${color} ${className}`}>
+    <span className={`inline-flex items-center gap-1 text-[13px] font-semibold ${color} ${className}`}>
       <svg
         width={14}
         height={14}
